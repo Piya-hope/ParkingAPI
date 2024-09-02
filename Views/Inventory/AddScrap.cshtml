@@ -1,0 +1,227 @@
+﻿@model ParkingSystem.Models.DistributionModel
+@{
+    ViewBag.Title = "AddScrap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Device Inventory</a></li>
+                    <li><a href="@Url.Action("ViewDistribution", "Inventory")"><i class="active"></i>View Distribution</a></li>
+                    <li><a href="@Url.Action("AddScrap", "Inventory")"><i class="active"></i>Add Scrap</a></li>
+                </ol>
+            </section>
+            <br />
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Add Scrap Details</strong></div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("AddScrap", "Inventory", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.InventoryName, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.InventoryName, new { @class = "form-control", @placeholder = "Enter Inventory Product Name", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.ModelName, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.ModelName, new { @class = "form-control", @placeholder = "Enter Product Model Name", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <h5 style="font:bold 12px arial,verdana">Inventory Quantity</h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", @placeholder = "Quantity", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Companyname, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Companyname, new { @class = "form-control", @placeholder = "Enter Product Company Name", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Instock, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Instock, new { @class = "form-control", @placeholder = "Enter Product Instock", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control", @placeholder = "Enter Site Name", @readonly = "true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Onfield, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Onfield, new { @class = "form-control", @placeholder = "Enter Product Quantity", @type = "number", @min = "1", @max = "100",@readonly="true" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.ReasonScrap, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextAreaFor(model => model.ReasonScrap, new { @class = "form-control", @placeholder = "Enter Reason Scrap", @textmode = "" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.DeviceNumber, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.DropDownListFor(model => model.DeviceName, new SelectList(ViewBag.devicelist, "DeviceName", "DeviceName"), "Please Select Device", new { @class = "form-control", @ID = "ddldevice" })
+                                                    @Html.HiddenFor(model => model.DeviceName, new { @id = "hdnDeviceNumber" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <center>
+                                                <input type="submit" value="Add Scrap" class="btn btn-primary btn-flat" TabIndex="13" id="Update" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Inventory")'" />
+                                            </center>
+                                            <br />
+                                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                                            @if (ViewBag.Message != null)
+                                            {
+                                                <text>
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            alert('@ViewBag.Message');
+                                                        });
+                                                    </script>
+                                                </text>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+}
+<!-- table script -->
+<script type="text/javascript">
+    //Allocation Script....//
+    $('#ddldevice').onchange(function () {
+        var siteListVal = null;
+        siteListVal = [];
+        var selected = $();
+        $("#ddldevice option:selected").each(function () {
+            siteListVal.push($(this).attr('value'));
+        });
+
+        if (typeof siteListVal !== 'undefined' && siteListVal.length > 0) {
+            $.ajax({
+                type: "post",
+                url: "/Inventory/devlist",
+                data: { Name: siteListVal },
+                datatype: "json",
+                traditional: true,
+                success: function (data, response) {                
+                }
+            });
+        }
+        else {
+            siteListVal = [];
+            alert('Please Select Device Name add to scrap!');
+        }
+    });
+
+
+</script>

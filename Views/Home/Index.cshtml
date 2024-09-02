@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="box">
+            <div class="box-body">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    </ol>
+                </section>
+                <br/>
+                </div>
+            </div>
+                <!-- Main content -->
+                <section class="content">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-yellow"><i class="fa fa-bank"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Site</span>
+                                    <span class="info-box-number">
+                                        20
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-green"><i class="fa fa-bank"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Active Site</span>
+                                    <span class="info-box-number">
+                                        15
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-red"><i class="fa fa-bank"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">InActive Site</span>
+                                    <span class="info-box-number">
+                                        5
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-yellow"><i class="ion ion-person-add"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Employee</span>
+                                    <span class="info-box-number">
+                                        150
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-green"><i class="ion ion-person-add"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Active Employee</span>
+                                    <span class="info-box-number">
+                                        140
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-red"><i class="ion ion-person-add"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">InActive Employee</span>
+                                    <span class="info-box-number">
+                                        10
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-gear-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Device</span>
+                                    <span class="info-box-number">
+                                        10
+                                        <small></small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-green"><i class="ion ion-ios-gear-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Active Device</span>
+                                    <span class="info-box-number">
+                                        8
+                                        <small></small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-red"><i class="ion ion-ios-gear-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">InActive Device</span>
+                                    <span class="info-box-number">
+                                        2
+                                        <small></small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-yellow"><i class="glyphicon glyphicon-user"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Customer</span>
+                                    <span class="info-box-number">
+                                        15
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-user"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Active Customer</span>
+                                    <span class="info-box-number">
+                                        14
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-user"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">InActive Customer</span>
+                                    <span class="info-box-number">
+                                        1
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /.content -->
+        </section>
+      </div>     
+}

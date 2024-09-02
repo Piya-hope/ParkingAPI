@@ -1,0 +1,227 @@
+﻿@model IEnumerable<ParkingSystem.Models.DeviceModel>
+@{
+    ViewBag.Title = "ViewDevice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Device</a></li>
+                    <li><a href="@Url.Action("ViewDeviceManager", "Device")"><i class="active"></i>View Device</a></li>
+                </ol>
+            </section>
+            <br />
+            <!-- /.design work-->
+            @if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 " style="padding-top: 10px;">
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="form-group">
+                                            <h4 style="font:bold 14px arial,verdana">Site Name</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            @Html.DropDownList("Site_ID", new SelectList(ViewBag.SitedeptList as IEnumerable<ParkingSystem.Models.DeviceModel>, "Site_ID", "SiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite", onchange = "document.location.href = '/Device/GetRecord?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <span style="font-weight: bold; font-size: large;" class="text-success no-margin">Device Summary</span>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3 style="font-weight:normal">
+                                                @Html.Label((string)ViewBag.Total)
+                                            </h3>
+                                            <p style="color:blue">Total Device</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalActive)
+                                            </h3>
+                                            <p class="text-success no-margin">
+                                                Active Device
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalInActive)
+                                            </h3>
+                                            <p class="text-danger bold">InActive Device</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All Device Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblDevice" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Device_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.DeviceName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.UniqueIdentificationNo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Site_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Device_IMEI)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Companyname)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ModelName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SerialNumber)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MobileNumber)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    @*<th>Edit</th>*@
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true)
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Device_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DeviceName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.UniqueIdentificationNo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Site_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Device_IMEI)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Companyname)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ModelName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SerialNumber)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MobileNumber)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            @*<td>
+                                                @Html.ActionLink("Edit", "EditDevice", new { id = item.Device_ID })
+                                            </td>*@
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Device_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DeviceName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.UniqueIdentificationNo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Site_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Device_IMEI)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Companyname)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ModelName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SerialNumber)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MobileNumber)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            @*<td>
+                                                @Html.ActionLink("Edit", "EditDevice", new { id = item.Device_ID })
+                                            </td>*@
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+
+                </section>
+            }
+        </div>
+    </div>
+}
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblDevice").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+<!-- /.row -->

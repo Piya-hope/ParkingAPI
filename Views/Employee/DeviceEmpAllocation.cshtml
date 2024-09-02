@@ -1,0 +1,614 @@
+﻿@model IEnumerable<ParkingSystem.Models.EmployeeModel>
+@{
+    ViewBag.Title = "Device User Allocation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>User Management</a></li>
+                    <li><a href="@Url.Action("DeviceEmpAllocation", "Employee")"><i class="active"></i>User Device Allocation</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">New User Allocation Device</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserDevice" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>Option</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status == "")
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:green" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Device_Allocate</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:blue;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                <p style="color:green;" class="font-12">Active</p>
+                                                @*<input type="button" value="De-Allocate Device" class="btn btn-link" style="width: 85px;color:red;" TabIndex="14" onclick="location.href='@Url.Action("DeAllocateDevice", "Employee", new { empid = item.User_ID, Siteid1 = item.EmpSiteID, deviceid1 = item.EmpDeviceID })'" />*@
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-link" style="color:darkblue;font-size:18px" id="redirect1" onclick="location.href='@Url.Action("ViewAllocationDevice", "Employee")'">Go To Device De-Allocation...</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 col-lg-4 " style="padding-top: 10px;">
+                                    <h4 class="box-title">New User Allocation Device</h4>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-lg-8" style="padding-top: 10px;">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3 col-sm-3 col-lg-3">
+                                        <h4>Site Name</h4>
+                                    </div>
+                                    <div class="col-md-5 col-sm-5 col-lg-5">
+                                        <div class="form-group">
+                                            @Html.DropDownList("EmpSiteID", new SelectList(ViewBag.SitedeptList1 as IEnumerable<ParkingSystem.Models.EmployeeModel>, "EmpSiteID", "EmpSiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite", onchange = "document.location.href = '/Employee/GetDeviceAllocateRecord?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserDevice" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>Option</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status == "")
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:green" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Device_Allocate</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:blue;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                <p style="color:green;" class="font-12">Active</p>
+                                                @*<input type="button" value="De-Allocate Device" class="btn btn-link" style="width: 85px;color:red;" TabIndex="14" onclick="location.href='@Url.Action("DeAllocateDevice", "Employee", new { empid = item.User_ID, Siteid1 = item.EmpSiteID, deviceid1 = item.EmpDeviceID })'" />*@
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-link" style="color:darkblue;font-size:18px" id="redirect1" onclick="location.href='@Url.Action("ViewAllocationDevice", "Employee")'">Go To Device De-Allocation...</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Supervisor")
+            {
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">New User Allocation Device</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserDevice" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>Option</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Designation == "Manager")
+                                    {
+                                        if (item.Status == "")
+                                        {
+                                            <tr style="color:red; display:none">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Mobile_No)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email_Id)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-link font-13" style="color:green" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Device_Allocate</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr style="color: blue; display: none">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Mobile_No)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email_Id)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                                <td>
+                                                    <p style="color:green;" class="font-12">Active</p>
+                                                    @*<input type="button" value="De-Allocate Device" class="btn btn-link" style="width: 85px;color:red;" TabIndex="14" onclick="location.href='@Url.Action("DeAllocateDevice", "Employee", new { empid = item.User_ID, Siteid1 = item.EmpSiteID, deviceid1 = item.EmpDeviceID })'" />*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (item.Status == "")
+                                        {
+                                            <tr style="color:red;">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Mobile_No)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email_Id)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-link font-13" style="color:green" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Device_Allocate</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr style="color:blue;">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.User_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Mobile_No)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email_Id)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                                <td>
+                                                    <p style="color:green;" class="font-12">Active</p>
+                                                    @*<input type="button" value="De-Allocate Device" class="btn btn-link" style="width: 85px;color:red;" TabIndex="14" onclick="location.href='@Url.Action("DeAllocateDevice", "Employee", new { empid = item.User_ID, Siteid1 = item.EmpSiteID, deviceid1 = item.EmpDeviceID })'" />*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+                            </table>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-link" style="color:darkblue;font-size:18px" id="redirect1" onclick="location.href='@Url.Action("ViewAllocationDevice", "Employee")'">Go To Device De-Allocation...</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+
+            @* Device Allocation Modelpopup *@
+            <div class="modal fade" id="modalUpdate">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header with-border">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="box-title font-16">Device Allocation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <input type="hidden" id="hfId" name="UserId">
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="District_Name" class="font-13">Name:</label>
+                                            <input type="text" class="form-control" id="txtUpdateName" name="Name" placeholder="Name" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Usertype" class="font-13">Designation:</label>
+                                            <input type="text" class="form-control" id="txtUsertype" name="Name" placeholder="Name" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <h3 class="font-16" style="color:blue;">Select Sites</h3>
+                                        <select class="form-control" id="Site" placeholder="Please Select Site">
+                                            <option>---Select Site---</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <h3 class="font-16" style="color:blue;">Select Device</h3>
+                                        <select class="form-control" id="Device" placeholder="Please Select Device">
+                                            <option>---Select Device---</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary pull-left" id="btnDeviceAllocation">Allocate Device</button>
+                                <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*End Modal *@
+
+            <div class="modal fade" id="msg">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-md-10" style="color:green">
+                                        @if (ViewBag.Message != null)
+                                        {
+                                            <text>
+                                                <script>
+                                                        $(document).ready(function () {
+                                                            alert('@ViewBag.Message');
+                                                        });
+                                                </script>
+                                            </text>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblUserDevice").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "300",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+<script>
+    //Page Load
+    $(document).ready(function () {
+
+
+    });
+
+    //Function for getting the Data Based upon User ID
+    function GetDetails(id) {
+        $.ajax({
+            url: "/Employee/GetbyEmpID/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response, data) {
+                $('#hfId').val(response.User_ID);  //#html_id .val(respon.bindingid)
+                $('#txtUpdateName').val(response.User_Name);
+                $("#txtEmailID").val(response.Email_Id);
+                $("#txtUsertype").val(response.Usertype);
+                GetAllotedDetails(id);
+                GetDeviceDetails();
+                $('#modalUpdate').modal('show');
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    }
+
+    //-----ddSiteBind....//
+    function GetAllotedDetails(id) {
+        var Site = jQuery("#Site").val();
+        jQuery('#Site').empty();
+        jQuery('#Site').html('<option Value="">Alloted Site</option>');
+
+        $.ajax({
+            url: "/Employee/BindAllotedsite/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, datasite) {      // bind the dropdown list using json result
+                    $('<option>',
+                        {
+                            value: datasite.Name,
+                            text: datasite.ID
+                        }).html(datasite.Name).appendTo("#Site");
+
+                })
+            },
+            error: function (data) {
+                alert("Employee Allocation Site Empty");
+            }
+        });
+        return false;
+    }
+
+    //--------------------ddlDeviceBind.............//
+    function GetDeviceDetails() {
+
+        $("#Site").change(function () {
+            var SITENAME = $("#Site").val();
+            if (SITENAME != null) {
+                var Device1 = $('#Device');
+                Device1.empty();
+                Device1.append($("<option></option>").val('').html('Please wait ...'));
+                debugger;
+                $.ajax({
+                    url: "/Employee/BindDeviceBySite/",
+                    method: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    data: { Sitename: $("#Site").val() },
+                    success: function (data1) {
+                        Device1.empty(); // Clear the plese wait
+                        Device1.append($("<option></option>").val('').html('Select Device'));
+                        $.each(data1, function (i, data) {
+                            Device1.append($("<option></option>").val(data.DeviceID).html(data.DeviceNumber));
+                        });
+                    },
+                    error: function (result) {
+                        alert("Error check Allocation");
+                    }
+                })
+            }
+            else {
+                alert('Please Select Device Allocation!');
+            }
+        });
+    }
+
+
+    //Allocation Script....//
+    $('#btnDeviceAllocation').click(function () {
+        var SITENAME1 = $('#Site').val();
+        if (SITENAME1 != null) {
+            var Device1 = $('#Device').val();
+            var Userid = $('#hfId').val();
+            if (Device1 != null && SITENAME1 != null && Userid != null) {
+                $.ajax({
+                    type: "post",
+                    url: "/Employee/DeviceAllocate",
+                    data: { DeviceID: $('#Device').val(), Userid: $('#hfId').val(), Site: $('#Site').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data, response) {
+                        $('#modalUpdate').modal('hide');
+                        $('#hfId').val("");
+
+                        location.reload();
+                    }
+                });
+            }
+            else {
+                alert('Please Select Device!');
+            }
+        }
+    });
+
+    //Valdidation using jquery
+    function validate() {
+        var isValid = true;
+
+        if ($('#Site').val().trim() == "") {
+            $('#Site').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#Site').css('border-color', 'lightgrey');
+        }
+        if ($('#Device').val().trim() == "") {
+            $('#Device').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#Device').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+
+</script>
+

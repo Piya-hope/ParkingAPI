@@ -1,0 +1,269 @@
+﻿@model ParkingSystem.Models.DeviceModel
+@{
+    ViewBag.Title = "AddDevice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="@Url.Action("ViewDevice", "Device")"><i class="active"></i>Device</a></li>
+                    <li><a href="@Url.Action("AddDevice", "Device")"><i class="active"></i>Add Device</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Device Details</strong></div>
+                                <div class="panel-body">
+                                    @using (Html.BeginForm("AddDevice", "Device", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.DeviceName, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.DeviceName, new { @class = "form-control", @placeholder = "Enter Device Name" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.ModelName, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.ModelName, new { @class = "form-control", @placeholder = "Enter Device Model Name" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Companyname, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.Companyname, new { @class = "form-control", @placeholder = "Enter Device Company Name" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SerialNumber, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.SerialNumber, new { @class = "form-control", @placeholder = "Enter Device Serial Number" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.UniqueIdentificationNo, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.UniqueIdentificationNo, new { @class = "form-control", @placeholder = "Enter Unique Identification Number" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Device_IMEI, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.Device_IMEI, new { @class = "form-control", @placeholder = "Enter Device IMEI Number", @maxlength = "30" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Site_Name, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SitedeptList, "SiteName", "SiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite" })
+                                                        @Html.HiddenFor(model => model.SiteName, new { @id = "hdnSiteId" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control", @placeholder = "Enter Mobile Number", @maxlength = "10" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SIM1number, htmlAttributes: new { @class = "control-label" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.SIM1number, new { @class = "form-control", @placeholder = "Enter SIM Number", @maxlength = "10" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Enter Device Description" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-6" style="font-size: 12px;">
+                                                Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <center>
+                                                    <input type="submit" value="Save" class="btn btn-primary btn-flat" TabIndex="13" id="Save" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Device")'" />
+                                                </center>
+                                                <br />
+                                                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        if (ViewBag.Message != null)
+                                        {
+
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2" style="color:green">
+                                                        <text>
+                                                            <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                        });
+                                                            </script>
+                                                        </text>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+
+
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(function () {
+        //$("#Start_Date").datepicker();
+        $("#StartDate").datepicker();
+        ({
+            showOn: 'button',
+            buttonImageOnly: true,
+            autoclose: true,
+            buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        });
+    });
+</script>
+<script type="text/javascript">
+    function Confirm() {
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+        if (confirm("Do you want to save data?")) {
+            confirm_value.value = "Yes";
+            document.forms[0].appendChild(confirm_value);
+        } else {
+            confirm_value.value = "No";
+            document.forms[0].appendChild(confirm_value);
+        }
+    }
+    function validateAndConfirm() {
+        var confirm_value = document.createElement("INPUT");
+        Page_ClientValidate("Save");  //'GroupName' is the ValidationGroup
+        if (Page_IsValid) {
+            confirm_value.type = "hidden";
+            confirm_value.name = "confirm_value";
+            if (confirm("Please confirm Update value, Before Click OK Button")) {
+                confirm_value.value = "Yes";
+                document.forms[0].appendChild(confirm_value);
+            } else {
+                confirm_value.value = "No";
+                document.forms[0].appendChild(confirm_value);
+            }
+        }
+    }
+
+
+</script>
+
+

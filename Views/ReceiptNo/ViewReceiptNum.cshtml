@@ -1,0 +1,507 @@
+﻿@model IEnumerable<ParkingSystem.Models.ReceiptNumber>
+@{
+    ViewBag.Title = "ReceiptNumber";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("ViewReceiptNum","ReceiptNo")"><i class="active"></i>View Receipt Initial</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Add Receipt Initial</strong></div>
+                                <div class="panel-body">
+                                    <button type="button" id="btnShowpop" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-mrole" style="margin-right:20px;" onclick="clearTextBox();">
+                                        Add New Receipt Initial
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Receipt_Number Initial [By Site]</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblPenalty" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ReceiptNo_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ReceiptNumbers)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                            <th>Edit</th>
+                                            <th style="color:red;">Delete</th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNo_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNumbers)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" id="btnGetByID" onclick="GetDetails(@item.ReceiptNo_ID)"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete" onclick="Delete(@item.ReceiptNo_ID)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNo_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNumbers)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" id="btnGetByID" onclick="GetDetails(@item.ReceiptNo_ID)"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete" onclick="Delete(@item.ReceiptNo_ID)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                   
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Receipt_Number Initial [By Site]</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblPenalty" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ReceiptNo_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ReceiptNumbers)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                          
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNo_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNumbers)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                   
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNo_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ReceiptNumbers)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+
+            @* Insertion Modelpopup *@
+            <div class="modal fade" id="modal-mrole">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header with-border">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="box-title font-16">Add Receipt Initial</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body" style="height:200px">
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="Site" class="font-13">Site</label><span style="color: #FF0000">*</span>
+                                            <select class="form-control" id="Site" placeholder="Please Select Site">
+                                                <option>---Select Site---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="ReceiptNumbers" class="font-13">Receipt Initial</label><span style="color: #FF0000">*</span>
+                                            <input type="text" class="form-control" id="ReceiptNumbers" placeholder="Enter Receipt Initials" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8" style="font-size: 12px;">
+                                        Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="btnAdd" onclick="return Add();">Save</button>
+                                <button type="button" class="btn btn-default pull-right" id="insertclose" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Updation Modelpopup *@
+            <div class="modal fade" id="modal-Update">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header with-border">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="box-title font-16"> Update Receipt Initials Details</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body" style="height:200px">
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                        <div class="form-group">
+                                            <input type="hidden" id="hfId" name="ReceiptId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="UpdateSite" class="font-13">Site</label><span style="color: #FF0000">*</span>
+                                            <select class="form-control" id="UpdateSite" placeholder="Please Select Site">
+                                                <option>---Select Site---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="ReceiptNumbers1" class="font-13">Receipt Initial</label><span style="color: #FF0000">*</span>
+                                            <input type="text" class="form-control" id="ReceiptNumbers1" placeholder="Enter Receipt Initials" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8" style="font-size: 12px;">
+                                        Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="Meassage">@ViewBag.Meassage</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return Update();">Update</button>
+                                <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblPenalty").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+
+
+<script>
+    //Page Load
+    $(document).ready(function () {
+        GetSite();
+        GetUpdateSite();
+    });
+
+
+    //Function for getting the Bind State
+    function GetSite() {
+        var Site = jQuery("#Site").val();
+        jQuery('#Site').empty();
+        jQuery('#Site').html('<option Value="">Please Select Site</option>');
+
+        $.ajax({
+            url: "/ReceiptNo/BindSite/",
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $.each(result, function (i, data1) {
+                    $('#Site').append("<option value='" + data1.SiteName + "'>" + data1.SiteName + "</option>");
+                })
+            },
+            error: function (result) {
+                alert(result.responseText);
+            }
+        });
+        return false;
+    }
+
+    //Function for getting the Bind Site For Update
+    function GetUpdateSite() {
+        var State = jQuery("#UpdateSite").val();
+        jQuery('#UpdateSite').empty();
+        jQuery('#UpdateSite').html('<option Value="">Please Select Site</option>');
+
+        $.ajax({
+            url: "/ReceiptNo/BindSite/",
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $.each(result, function (i, data2) {
+                    $('#UpdateSite').append("<option value='" + data2.SiteName + "'>" + data2.SiteName + "</option>");
+                })
+            },
+            error: function (result) {
+                alert(result.responseText);
+            }
+        });
+        return false;
+    }
+
+    //Add Data Function
+    function Add() {
+        var res = validate();
+        if (res == false) {
+            return false;
+        }
+        var empObj = {
+            ReceiptNumbers:$('#ReceiptNumbers').val(),
+            SiteName:$('#Site').val(),
+        };
+        $.ajax({
+            url: "/ReceiptNo/AddDetails",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#modal-mrole').modal('hide');
+                alert(result);
+                location.reload();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    //Function for getting the Data Based upon ID
+    function GetDetails(id) {
+        $.ajax({
+            url: "/ReceiptNo/GetDetails/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response, data) {
+                $('#hfId').val(response.ReceiptNo_ID);  //#html_id .val(respon.bindingid)
+                $('#ReceiptNumbers1').val(response.ReceiptNumbers);
+                $("#UpdateSite").val(response.SiteName, "SPACE");
+
+                $('#modal-Update').modal('show');
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    }
+
+    //function for updating State's record
+    function Update() {
+        var res = validate1();
+        if (res == false) {
+            return false;
+        }
+        var empObj = {
+            ReceiptNo_ID: $('#hfId').val(),
+            ReceiptNumbers: $('#ReceiptNumbers1').val(),
+            SiteName: $('#UpdateSite').val(),
+        };
+        $.ajax({
+            url: "/ReceiptNo/UpdateDetails",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#modal-Update').modal('hide');
+                $('#hfId').val("");
+                $('#txtUpdateName').val("");
+                $('#StateUpdate').val("");
+
+                alert(result);
+                location.reload();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    //function for deleting State's record
+    function Delete(ID) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            $.ajax({
+                url: "/ReceiptNo/DeleteDetails/" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    //Valdidation using jquery
+    function validate() {
+        var isValid = true;
+
+        if ($('#Site').val().trim() == "") {
+            $('#Site').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#Site').css('border-color', 'lightgrey');
+        }
+        if ($('#ReceiptNumbers').val().trim() == "") {
+            $('#ReceiptNumbers').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#ReceiptNumbers').css('border-color', 'lightgrey');
+        }
+
+
+        return isValid;
+    }
+
+    function validate1() {
+        var isValid = true;
+        if ($('#ReceiptNumbers1').val().trim() == "") {
+            $('#ReceiptNumbers1').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#ReceiptNumbers1').css('border-color', 'lightgrey');
+        }
+        if ($('#UpdateSite').val().trim() == "") {
+            $('#UpdateSite').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#UpdateSite').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
+
+    //Function for clearing the textboxes
+    function clearTextBox() {
+        $('#ReceiptNumbers').val("");
+        $('#Site').val("");
+        $('#ReceiptNumbers').css('border-color', 'lightgrey');
+        $('#Site').css('border-color', 'lightgrey');
+    }
+</script>
+

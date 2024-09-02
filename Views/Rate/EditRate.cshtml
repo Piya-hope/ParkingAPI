@@ -1,0 +1,556 @@
+﻿@model ParkingSystem.Models.Rate
+@{
+    ViewBag.Title = "EditRate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        //$("#StartTime").datepicker();
+        //$("#EndTime").datepicker();
+        //({
+        //    showOn: 'button',
+        //    buttonImageOnly: true,
+        //    autoclose: true,
+        //    buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        //});
+
+        //Date range picker with time picker
+        $('#StartEndTime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' });
+    });
+</script>
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("EditRate", "Rate")"><i class="active"></i>Edit Rate</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Rate Details</strong></div>
+                                <div class="panel-body">
+                                    @using (Html.BeginForm("EditRate", "Rate", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control" })
+                                                        @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SiteList, "SiteName", "SiteName"), "Please Select Site", new { @class = "form-control", @id = "ddlSite1" })
+                                                        @Html.HiddenFor(model => model.SiteName, new { @id = "hdnSiteId" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.RateAmounts, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.RateAmounts, new { @class = "form-control", @placeholder = "Enter Rate Amount" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SiteType, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.SiteType, new { @class = "form-control", @placeholder = "SiteType", id = "txtSiteType1", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.FreeMinute, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.FreeMinute, new { @class = "form-control", @placeholder = "Free Minute", id = "txtFreeMinute", @type = "number", @min = "0", @max = "220" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.RadioButtonFor(model => model.Status, "True")
+                                                        @Html.Label("Active")
+                                                        <br />
+                                                        @Html.RadioButtonFor(model => model.Status, "False")
+                                                        @Html.Label("InActive")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divPostpaid1" style="border-top: 2px solid #eee; padding-top: 13px;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.ExtraHourCharges, htmlAttributes: new { @class = "control-label" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(model => model.ExtraHourCharges, new { @class = "form-control", @placeholder = "Enter Extra Hour Charges Amount" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Date and time range -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label" })
+                                                            <span style="color: #FF0000">*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </div>
+                                                                @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control pull-right", @placeholder = "Enter Start - End Time", id = "StartEndTime" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.NightCharge, htmlAttributes: new { @class = "control-label" })
+                                                            <span style="color: #FF0000">*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(model => model.NightCharge, new { @class = "form-control", @placeholder = "Enter Night Charges " })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Date and time range -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </div>
+                                                                @Html.TextBoxFor(model => model.EndTime, new { @class = "form-control pull-right", @placeholder = "Enter Start - End Time", id = "EndTime", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-6" style="font-size: 12px;">
+                                                Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required fields.
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <center>
+                                                    <input type="submit" value="Update" class="btn btn-primary btn-flat" TabIndex="13" id="Edit" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("ClearEdit", "Rate")'" />
+                                                </center>
+                                                <br />
+                                                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10" style="color:green">
+                                                    @if (ViewBag.Message != null)
+                                                    {
+                                                        <text>
+                                                            <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                            });
+                                                            </script>
+                                                        </text>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Rate Details</strong></div>
+                                <div class="panel-body">
+                                    @using (Html.BeginForm("EditRate", "Rate", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control" })
+                                                        @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SiteList, "SiteName", "SiteName"), "Please Select Site", new { @class = "form-control", @id = "ddlSite1" })
+                                                        @Html.HiddenFor(model => model.SiteName, new { @id = "hdnSiteId" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.RateAmounts, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.RateAmounts, new { @class = "form-control", @placeholder = "Enter Rate Amount" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.SiteType, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.SiteType, new { @class = "form-control", @placeholder = "SiteType", id = "txtSiteType1", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.FreeMinute, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.FreeMinute, new { @class = "form-control", @placeholder = "Free Minute", id = "txtFreeMinute", @type = "number", @min = "1", @max = "220" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.RadioButtonFor(model => model.Status, "True")
+                                                        @Html.Label("Active")
+                                                        <br />
+                                                        @Html.RadioButtonFor(model => model.Status, "False")
+                                                        @Html.Label("InActive")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divPostpaid1" style="border-top: 2px solid #eee; padding-top: 13px;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.ExtraHourCharges, htmlAttributes: new { @class = "control-label" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(model => model.ExtraHourCharges, new { @class = "form-control", @placeholder = "Enter Extra Hour Charges Amount" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Date and time range -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label" })
+                                                            <span style="color: #FF0000">*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </div>
+                                                                @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control pull-right", @placeholder = "Enter Start - End Time", id = "StartEndTime" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.NightCharge, htmlAttributes: new { @class = "control-label" })
+                                                            <span style="color: #FF0000">*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            @Html.TextBoxFor(model => model.NightCharge, new { @class = "form-control", @placeholder = "Enter Night Charges " })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Date and time range -->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </div>
+                                                                @Html.TextBoxFor(model => model.EndTime, new { @class = "form-control pull-right", @placeholder = "Enter Start - End Time", id = "EndTime", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-6" style="font-size: 12px;">
+                                                Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required fields.
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <center>
+                                                    <input type="submit" value="Update" class="btn btn-primary btn-flat" TabIndex="13" id="Edit" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("ClearEdit", "Rate")'" />
+                                                </center>
+                                                <br />
+                                                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10" style="color:green">
+                                                    @if (ViewBag.Message != null)
+                                                    {
+                                                        <text>
+                                                            <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                            });
+                                                            </script>
+                                                        </text>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+            }
+
+<script type="text/javascript">
+    function Confirm() {
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+        if (confirm("Do you want to save data?")) {
+            confirm_value.value = "Yes";
+            document.forms[0].appendChild(confirm_value);
+        } else {
+            confirm_value.value = "No";
+            document.forms[0].appendChild(confirm_value);
+        }
+    }
+    function validateAndConfirm() {
+        var confirm_value = document.createElement("INPUT");
+        Page_ClientValidate("Save");  //'GroupName' is the ValidationGroup
+        if (Page_IsValid) {
+            confirm_value.type = "hidden";
+            confirm_value.name = "confirm_value";
+            if (confirm("Please confirm Update value, Before Click OK Button")) {
+                confirm_value.value = "Yes";
+                document.forms[0].appendChild(confirm_value);
+            } else {
+                confirm_value.value = "No";
+                document.forms[0].appendChild(confirm_value);
+            }
+        }
+    }
+</script> 
+
+<script>
+    $(document).ready(function () {
+        var SiteType1 = $("#txtSiteType1").val();
+
+        if (SiteType1 == 'ProRate') {
+            $('#divPostpaid1').show();
+            //$('#txtAmonut').val("00.00");
+        }
+        else if (SiteType1 == 'FlatRate') {
+            $('#divPostpaid1').hide();
+        }
+        //--------------------------------------------------------------------//
+        $("#ddlSite1").change(function () {
+            //$('#ddlSiteType').val();
+            //$('#txtSiteType').val();
+
+            var SiteName = $(this).val();
+
+            if (SiteName != null) {
+                debugger;
+                $.ajax({
+                    url: "/Rate/GetSiteType/",
+                    typr: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    data: { Sitename1: $("#ddlSite1").val() },  //send name to another method
+                    success: function (result) {
+                        //$('#txtSiteType').val(result.SiteType);
+                        $.each(result, function (i, data) {
+                            /*  $('#ddlSiteType').append("<option value='" + data.SiteType + "'>" + data.SiteType + "</option>");*/
+
+                            $('#txtSiteType1').val(data.SiteType);
+                            var SiteType1 = $("#txtSiteType1").val();
+
+                            if (SiteType1 == 'ProRate') {
+                                $('#divPostpaid1').show();
+                                $('#txtAmonut').val("00.00");
+                            }
+                            else if (SiteType1 == 'FlatRate') {
+                                $('#divPostpaid1').hide();
+                            }
+                        })
+                    },
+                    error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+                return false;
+            }
+            else {
+                alert('SiteName Null!');
+            }
+        });
+    });
+
+    function hideOnLoad() {
+        $('#divPostpaid').hide();
+    }
+
+
+</script>
+

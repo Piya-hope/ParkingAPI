@@ -1,0 +1,827 @@
+﻿@model IEnumerable<ParkingSystem.Models.EmployeeModel>
+@{
+    ViewBag.Title = "UserAllocationSite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    if (Session["Designation"].ToString() == "Admin")
+    {
+        <div class="content-wrapper">
+            <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a href="@Url.Action("ViewEmployee", "Employee")"><i class="active"></i>User Management</a></li>
+                        <li><a href="@Url.Action("UserAllocationSite", "Employee")"><i class="active"></i>User Allocation Site</a></li>
+                    </ol>
+                </section>
+                <br />
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <span style="font-weight: bold; font-size: large;" class="text-success no-margin">User Summary</span>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3 style="font-weight:normal">
+                                                @Html.Label((string)ViewBag.Total)
+                                            </h3>
+                                            <p style="color:blue">Total User</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalActive)
+                                            </h3>
+                                            <p class="text-success no-margin">
+                                                Active User
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalInActive)
+                                            </h3>
+                                            <p class="text-danger bold">InActive User</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*//}*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">User Allocation Site</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserAllocation" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>
+                                        Site Names
+                                    </th>
+                                    <th>Allocation|Deallocation</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true) //Tbl_Mapping_Emp_Site_Status..T=Red
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID, new { @id = "hfUserId" })
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td style="color:indigo;">
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions" onclick="GetDetails(@item.User_ID)">Allocation</button>  |
+                                                <span style="color: Red"> @Html.ActionLink("Deallocation", "DeAssignEmployeeAll", new { Userid = item.User_ID, siteid = item.EmpSiteID, @class = "btn btn-link font-13 btnred" })</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Allocation</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </table>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10" style="color:green">
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        @ViewBag.Message;
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </section>
+
+                @* Allocation Modelpopup *@
+                <div class="modal fade" id="modalUpdate">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border" style="height:55px">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16">Site Allocation</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:400px">
+                                    <div class="row">
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="District_Name" class="font-13">Name:</label>
+                                                <input type="text" class="form-control" id="txtUpdateName" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="txtEmailID" class="font-13">Email:</label>
+                                                <input type="text" class="form-control" id="txtEmailID" name="Name" placeholder="Email" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="Usertype" class="font-13">Designation:</label>
+                                                <input type="text" class="form-control" id="txtUsertype" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="hfId" name="UserId">
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <h3 class="font-16" style="color:blue;">Select Sites For Allocations</h3>
+                                        <table id="tblStatus" class="table table-bordered table-striped font-12" style="width:100%">
+                                            <tr>
+                                                <th style="width: 10px">
+                                                    ID
+                                                </th>
+                                                <th style="width: 40px">
+                                                    Site_Name
+                                                </th>
+                                            </tr>
+                                            @foreach (var names in ViewBag.SitedeptList)
+                                            {
+                                                var checkBoxId = "chk" + names.EmpSiteID;
+                                                var tdId = "td" + names.EmpSiteID;
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="@checkBoxId" class="chkclass" value="@names.EmpSiteID" />
+                                                        &nbsp; &nbsp;
+                                                        @names.EmpSiteID
+                                                    </td>
+                                                    <td id="@tdId">
+                                                        @names.EmpSiteName
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="modal-footer" style="padding:40px">
+                                <button type="submit" class="btn btn-primary pull-left" id="btnAllocation">Allocate</button>
+                                <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*End Modal *@
+            </div>
+        </div>
+    }
+    else if (Session["Designation"].ToString() == "Manager")
+    {
+        <div class="content-wrapper">
+            <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a href="@Url.Action("ViewEmployee", "Employee")"><i class="active"></i>User Management</a></li>
+                        <li><a href="@Url.Action("UserAllocationSite", "Employee")"><i class="active"></i>User Allocation Site</a></li>
+                    </ol>
+                </section>
+                <br />
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <span style="font-weight: bold; font-size: large;" class="text-success no-margin">User Summary</span>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3 style="font-weight:normal">
+                                                @Html.Label((string)ViewBag.Total)
+                                            </h3>
+                                            <p style="color:blue">Total User</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalActive)
+                                            </h3>
+                                            <p class="text-success no-margin">
+                                                Active User
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalInActive)
+                                            </h3>
+                                            <p class="text-danger bold">InActive User</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*//}*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All User Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserAllocation" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>
+                                        Site Names
+                                    </th>
+                                    <th>Allocation|Deallocation</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true) //Tbl_Mapping_Emp_Site_Status..T=Red
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID, new { @id = "hfUserId" })
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions" onclick="GetDetails(@item.User_ID)">Allocation</button>  |
+                                                <span style="color: Red"> @Html.ActionLink("Deallocation", "DeAssignEmployeeAll", new { Userid = item.User_ID, siteid = item.EmpSiteID, @class = "btn btn-link font-13 btnred" })</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Allocation</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </table>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10" style="color:green">
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        @ViewBag.Message;
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </section>
+
+                @* Allocation Modelpopup *@
+                <div class="modal fade" id="modalUpdate">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border" style="height:55px">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16">Site Allocation</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:400px">
+                                    <div class="row">
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="District_Name" class="font-13">Name:</label>
+                                                <input type="text" class="form-control" id="txtUpdateName" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="txtEmailID" class="font-13">Email:</label>
+                                                <input type="text" class="form-control" id="txtEmailID" name="Name" placeholder="Email" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="Usertype" class="font-13">Designation:</label>
+                                                <input type="text" class="form-control" id="txtUsertype" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="hfId" name="UserId">
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <h3 class="font-16" style="color:blue;">Select Sites For Allocations</h3>
+                                        <table id="tblStatus" class="table table-bordered table-striped font-12" style="width:100%">
+                                            <tr>
+                                                <th style="width: 10px">
+                                                    ID
+                                                </th>
+                                                <th style="width: 40px">
+                                                    Site_Name
+                                                </th>
+                                            </tr>
+                                            @foreach (var names in ViewBag.SitedeptList)
+                                            {
+                                                var checkBoxId = "chk" + names.EmpSiteID;
+                                                var tdId = "td" + names.EmpSiteID;
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="@checkBoxId" class="chkclass" value="@names.EmpSiteID" />
+                                                        &nbsp; &nbsp;
+                                                        @names.EmpSiteID
+                                                    </td>
+                                                    <td id="@tdId">
+                                                        @names.EmpSiteName
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="modal-footer" style="padding:40px">
+                                <button type="submit" class="btn btn-primary pull-left" id="btnAllocation">Allocate</button>
+                                <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*End Modal *@
+            </div>
+        </div>
+    }
+    else if (Session["Designation"].ToString() == "Supervisor")
+    {
+        <div class="content-wrapper">
+            <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a href="@Url.Action("ViewEmployee", "Employee")"><i class="active"></i>User Management</a></li>
+                        <li><a href="@Url.Action("UserAllocationSite", "Employee")"><i class="active"></i>User Allocation Site</a></li>
+                    </ol>
+                </section>
+                <br />
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <span style="font-weight: bold; font-size: large;" class="text-success no-margin">User Summary</span>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3 style="font-weight:normal">
+                                                @Html.Label((string)ViewBag.Total)
+                                            </h3>
+                                            <p style="color:blue">Total User</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalActive)
+                                            </h3>
+                                            <p class="text-success no-margin">
+                                                Active User
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalInActive)
+                                            </h3>
+                                            <p class="text-danger bold">InActive User</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*//}*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All User Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblUserAllocation" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>
+                                        Site Names
+                                    </th>
+                                    <th>Allocation|Deallocation</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true) //Tbl_Mapping_Emp_Site_Status..T=Red
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID, new { @id = "hfUserId" })
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions" onclick="GetDetails(@item.User_ID)">Allocation</button>  |
+                                                <span style="color: Red"> @Html.ActionLink("Deallocation", "DeAssignEmployeeAll", new { Userid = item.User_ID, siteid = item.EmpSiteID, @class = "btn btn-link font-13 btnred" })</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_ID)
+                                                @Html.HiddenFor(modelItem => item.User_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.User_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EmpSiteName)
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-link font-13" style="color:blue" id="btnOptions1" onclick="GetDetails(@item.User_ID)">Allocation</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </table>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10" style="color:green">
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        @ViewBag.Message;
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </section>
+
+                @* Allocation Modelpopup *@
+                <div class="modal fade" id="modalUpdate">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border" style="height:55px">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16">Site Allocation</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:400px">
+                                    <div class="row">
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="District_Name" class="font-13">Name:</label>
+                                                <input type="text" class="form-control" id="txtUpdateName" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="txtEmailID" class="font-13">Email:</label>
+                                                <input type="text" class="form-control" id="txtEmailID" name="Name" placeholder="Email" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="Usertype" class="font-13">Designation:</label>
+                                                <input type="text" class="form-control" id="txtUsertype" name="Name" placeholder="Name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="hfId" name="UserId">
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <h3 class="font-16" style="color:blue;">Select Sites For Allocations</h3>
+                                        <table id="tblStatus" class="table table-bordered table-striped font-12" style="width:100%">
+                                            <tr>
+                                                <th style="width: 10px">
+                                                    ID
+                                                </th>
+                                                <th style="width: 40px">
+                                                    Site_Name
+                                                </th>
+                                            </tr>
+                                            @foreach (var names in ViewBag.SitedeptList)
+                                            {
+                                                var checkBoxId = "chk" + names.EmpSiteID;
+                                                var tdId = "td" + names.EmpSiteID;
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="@checkBoxId" class="chkclass" value="@names.EmpSiteID" />
+                                                        &nbsp; &nbsp;
+                                                        @names.EmpSiteID
+                                                    </td>
+                                                    <td id="@tdId">
+                                                        @names.EmpSiteName
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="modal-footer" style="padding:40px">
+                                <button type="submit" class="btn btn-primary pull-left" id="btnAllocation">Allocate</button>
+                                <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*End Modal *@
+            </div>
+        </div>
+    }
+}
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblUserAllocation").prepend($("<thead></thead>").append($("#tblUserAllocation").find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "105%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var tblStatus = $("#tblStatus").prepend($("<thead></thead>").append($("#tblStatus").find("tr:first"))).DataTable(
+            {
+                "scrollY": "200px",
+                "scrollCollapse": true,
+                "paging": false,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": true,
+            });
+    });
+</script>
+<!--/ table script -->
+<!-- /.row -->
+<script>
+    //Page Load
+    $(document).ready(function () {
+
+
+    });
+
+    //Function for getting the Data Based upon User ID
+    function GetDetails(id) {
+        $.ajax({
+            url: "/Employee/GetbyID/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response, data) {
+                $('#hfId').val(response.User_ID);  //#html_id .val(respon.bindingid)
+                $('#txtUpdateName').val(response.User_Name);
+                $("#txtEmailID").val(response.Email_Id);
+                $("#txtUsertype").val(response.Usertype);
+
+                $('#modalUpdate').modal('show');
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('.chkclass').click(function () {
+            var getchkid = $(this).attr('id');
+            var isChecked = $('#' + getchkid).is(':checked');
+
+            if ($('#' + getchkid).is(':checked') == true) {
+                $('#td' + $(this).val()).css("color", "Black");
+                $('#td' + $(this).val()).css("background-color", "Yellow");
+            }
+            else {
+                $('#td' + $(this).val()).css("color", "black");
+                $('#td' + $(this).val()).css("background-color", "unset");
+            }
+        });
+
+        //Allocation Script....//
+        $('#btnAllocation').click(function () {
+            var siteListVal = null;
+            siteListVal = [];
+
+            $('input:checkbox:checked').each(function () {
+                siteListVal.push($(this).attr('value'));
+            });
+
+            if (typeof siteListVal !== 'undefined' && siteListVal.length > 0) {
+                $.ajax({
+                    type: "post",
+                    url: "/Employee/AllocateEmpSite",
+                    data: { Name: siteListVal, User_ID: $('#hfId').val() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data, response) {
+                        $('#modalUpdate').modal('hide');
+                        $('#hfId').val("");
+                        $(".chkclass").prop("checked", false);
+                        location.reload();
+                    }
+                });
+            }
+            else {
+                siteListVal = [];
+                alert('Please Check Site Name!');
+            }
+        });
+    });
+
+</script>
+

@@ -1,0 +1,207 @@
+﻿@model IEnumerable<ParkingSystem.Models.InventoryModel>
+@{
+    ViewBag.Title = "ViewinventoryManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Device Inventory</a></li>
+                    <li><a href="@Url.Action("ViewinventoryManager", "Inventory")"><i class="active"></i>View Inventory</a></li>
+                </ol>
+            </section>
+            <br />
+            <!-- /.design work-->
+            @if (Session["Designation"].ToString() == "Manager")
+            {
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 " style="padding-top: 10px;">
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="form-group">
+                                            <h4 style="font:bold 14px arial,verdana">Site Name</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            @Html.DropDownList("Site_ID", new SelectList(ViewBag.SitedeptList as IEnumerable<ParkingSystem.Models.InventoryModel>, "Site_ID", "SiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite", onchange = "document.location.href = '/Inventory/GetRecordInventory?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View Inventory Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblInventory" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Inve_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.InventoryName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ModelName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Companyname)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Quantity)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Instock)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Onfield)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Scrap)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Date)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SiteName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+
+                                </tr>
+
+                                @foreach (var item in (ViewBag.Inventorytlist as IEnumerable<ParkingSystem.Models.InventoryModel>))
+                                {
+                                    if (@item.Status1 == true)
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Inve_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InventoryName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ModelName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Companyname)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Quantity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Instock)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Onfield)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Scrap)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Inve_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InventoryName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ModelName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Companyname)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Quantity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Instock)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Onfield)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Scrap)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+
+                </section>
+            }
+        </div>
+    </div>
+}
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblInventory").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+<!-- /.row -->

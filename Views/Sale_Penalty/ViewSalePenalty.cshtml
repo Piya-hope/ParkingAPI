@@ -1,0 +1,146 @@
+﻿@model ParkingSystem.Models.SalePenlaty
+@{
+    ViewBag.Title = "Sale_Penalty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Sales</a></li>
+                    <li><a href="@Url.Action("ViewSalePenalty","Sale_Penalty")"><i class="active"></i>View Penalty</a></li>
+                </ol>
+            </section>
+            <br />
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Add Penalty Details</strong></div>
+                            <div class="panel-body">
+                                <div class="row" style="padding: 8px 30px;">      
+                                     <input type="submit" value="Add New Penalty" class="btn btn-primary btn-default" TabIndex="13" id="btnAdd1" onclick="location.href='@Url.Action("AddSalePenalty", "Sale_Penalty")'"/>                              
+                                </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>View Penalty Details</strong>
+
+                            </div>
+                            <div class="panel-body">
+                                <table id="tblSalePenalty" class="table table-bordered table-striped font-12" style="width:100%">
+                                    <thead></thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Penlaty_ID)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.User_Name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Mobile_No)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Email_Id)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Vehicle_Type)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Vehicle_Number)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Amount)
+                                        </th>
+                                        <th>Edit</th>
+                                        <th style="color:red;">Delete</th>
+                                    </tr>
+
+                                    @*@foreach (var item in Model)
+                                        {
+                                            if (item.State_Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" id="btnGetByID" onclick="GetDetails(@item.State_ID)"> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete" onclick="Delete(@item.State_ID)"> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" style="font-weight:bold" id="btnGetByID1" onclick="GetDetails(@item.State_ID)"> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete1" onclick="Delete(@item.State_ID)"> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+    @* table script *@
+    <script>
+        $(function () {
+            $("#tblSalePenalty").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+                "sScrollY": "250",
+                "sScrollX": "10%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "paging": true,
+                "bPaginate": true,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": true,
+                "scrollX": true,
+                "font-size": "12px",
+            });
+        });
+    </script>
+
+

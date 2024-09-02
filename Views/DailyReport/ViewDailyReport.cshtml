@@ -1,0 +1,231 @@
+﻿@model ParkingSystem.Models.DailyReport
+@{
+    ViewBag.Title = "Daily Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        //$("#Start_Date").datepicker();
+        $("#Date").datepicker();
+        ({
+            showOn: 'button',
+            buttonImageOnly: true,
+            autoclose: true,
+            buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        });
+    });
+</script>
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Report</a></li>
+                    <li><a href="@Url.Action("ViewDailyReport","DailyReport")"><i class="active"></i>View Daily Report</a></li>
+                </ol>
+            </section>
+            <br />
+            <section class="content">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Daily Report</strong></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                @*<span style="color: #FF0000">*</span>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SiteNameList, "SiteName", "SiteName"), "Please Select Site Name", new { @class = "form-control" })
+                                                @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnSiteName_ID" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                @*<span style="color: #FF0000">*</span>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control" })
+                                                @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
+                                                @*<span style="color: #FF0000">*</span>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <div class="input-group date">
+                                                    @Html.TextBoxFor(model => model.Date, "{0:dd/MM/yyyy}", new { @class = "form-control", @placeholder = "Enter Date" })
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Vehicle_Number, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(model => model.Vehicle_Number, new { @class = "form-control", @placeholder = "Enter  Vehicle_Number" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-6" style="font-size: 12px;">
+                                        @*Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.*@
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="form-group">
+                                        <center>
+                                            <input type="submit" value="Get Report" class="btn btn-primary btn-flat" TabIndex="13" id="GetReport" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Penlaty")'" />
+                                        </center>
+                                        <br />
+                                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>View Daily Report</strong>
+
+                            </div>
+                            <div class="panel-body">
+                                <table id="tblDailyReport" class="table table-bordered table-striped font-12" style="width:100%">
+                                    <thead></thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ID)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Vehicle_Type)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.No_Of_Vehicles)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Amount)
+                                        </th>
+                                        <th>Edit</th>
+                                        <th style="color:red;">Delete</th>
+                                    </tr>
+
+                                    @*@foreach (var item in Model)
+                                        {
+                                            if (item.State_Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" id="btnGetByID" onclick="GetDetails(@item.State_ID)"> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete" onclick="Delete(@item.State_ID)"> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" style="font-weight:bold" id="btnGetByID1" onclick="GetDetails(@item.State_ID)"> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete1" onclick="Delete(@item.State_ID)"> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblDailyReport").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+

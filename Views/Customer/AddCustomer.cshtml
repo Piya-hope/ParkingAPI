@@ -1,0 +1,390 @@
+﻿@model ParkingSystem.Models.CustomerModel
+@{
+    ViewBag.Title = "AddCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        //$("#StartTime").datepicker();
+        //$("#EndTime").datepicker();
+        //({
+        //    showOn: 'button',
+        //    buttonImageOnly: true,
+        //    autoclose: true,
+        //    buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        //});
+
+        //Date range picker with time picker
+        $('#StartEndTime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' });
+    });
+</script>
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="@Url.Action("ViewCustomer", "Customer")"><i class="active"></i>Customer</a></li>
+                    <li><a href="@Url.Action("AddCustomer", "Customer")"><i class="active"></i>Add Customer</a></li>
+                </ol>
+            </section>
+            <br />
+            @*@if (Session["Designation"].ToString() == "Admin")
+                {*@
+            <section class="content">
+                <div class="row">
+                   
+                    <div class="col-md-12" style="height: 600px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Customer Details</strong></div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("AddCustomer", "Customer", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 col-md-12">
+                                            <div class="col-lg-4 col-sm-4 col-md-4">
+                                                <div class="col-lg-4 col-sm-4 col-md-4">
+                                                    <p style="color: black; margin-left: -30px" class="font-12">Site Name:</p>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6 col-md-6">
+                                                    <p style="color: green;margin-left: -25px;" class="font-12">
+                                                        @Html.Label((string)ViewBag.SiteName)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-4 col-md-4">
+                                                <div class="col-lg-4 col-sm-4 col-md-4">
+                                                    <p style="color: black; margin-left: -17px;" class="font-12">Site Type:</p>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6 col-md-6">
+                                                    <p style="color: green;margin-left: -10px;" class="font-12">
+                                                        @Html.Label((string)ViewBag.SiteType)
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-1"></div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-4 col-md-4">
+                                                <div class="col-lg-4 col-sm-4 col-md-4">
+                                                    <p style="color: black; margin-left: -17px;" class="font-12">Device:</p>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6 col-md-6">
+                                                    <p style="color: green;margin-left: -10px;" class="font-12">
+                                                        @Html.Label((string)ViewBag.Device)
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="toplineop">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", @placeholder = "Enter Customer Name" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Enter Customer Email" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control", @placeholder = "Enter Customer Mobile", @maxlength = "10" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @placeholder = "Enter Customer Address" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.VehicleNumber, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.VehicleNumber, new { @class = "form-control", @placeholder = "Enter Vehicle Number" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control", @id = "ddlVehicleType1" })
+                                                        @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.CustType, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownList("CustType", new List<SelectListItem>
+                                                            {
+                                                             new SelectListItem{ Text="Select Customer Type", Value = "Select Customer Type",Selected=true},
+                                                                 new SelectListItem{ Text="Irregular", Value = "Irregular" },
+                                                                new SelectListItem{ Text="Regular", Value = "Regular" },
+                                                             },
+                                                           new { @class = "form-control", ViewBag.CustType })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.DropDownList("Gender", new List<SelectListItem>
+                                                            {
+                                                             new SelectListItem{ Text="Select Gender", Value = "Select Gender",Selected=true},
+                                                                 new SelectListItem{ Text="Male", Value = "Male" },
+                                                                 new SelectListItem{ Text="Female", Value = "Female" },
+                                                                 new SelectListItem{ Text="Other", Value = "Other" },
+                                                             },
+                                                           new { @class = "form-control", ViewBag.Gender })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.ParkingAmount, htmlAttributes: new { @class = "control-label" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        @Html.TextBoxFor(model => model.ParkingAmount, new { @class = "form-control", @placeholder = "Enter Amount", id = "txtRate" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Date and time range -->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(model => model.InTime, htmlAttributes: new { @class = "control-label" })
+                                                        <span style="color: #FF0000">*</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-clock-o"></i>
+                                                            </div>
+                                                            @Html.TextBoxFor(model => model.InTime, new { @class = "form-control pull-right", @placeholder = "Enter In - Out Time", id = "StartEndTime" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.RateID, new { @class = "form-control", @placeholder = "Enter RateID", id = "txtRateId" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <center>
+                                                <input type="submit" value="Save" class="btn btn-primary btn-flat" TabIndex="13" id="Save" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Device")'" />
+                                            </center>
+                                            <br />
+                                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                                            @if (ViewBag.Message != null)
+                                            {
+                                                <text>
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            alert('@ViewBag.Message');
+                                                        });
+                                                    </script>
+                                                </text>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            @*}*@
+        </div>
+
+
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(function () {
+        //$("#Start_Date").datepicker();
+        $("#StartDate").datepicker();
+        ({
+            showOn: 'button',
+            buttonImageOnly: true,
+            autoclose: true,
+            buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        });
+    });
+</script>
+<script type="text/javascript">
+    function Confirm() {
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+        if (confirm("Do you want to save data?")) {
+            confirm_value.value = "Yes";
+            document.forms[0].appendChild(confirm_value);
+        } else {
+            confirm_value.value = "No";
+            document.forms[0].appendChild(confirm_value);
+        }
+    }
+    function validateAndConfirm() {
+        var confirm_value = document.createElement("INPUT");
+        Page_ClientValidate("Save");  //'GroupName' is the ValidationGroup
+        if (Page_IsValid) {
+            confirm_value.type = "hidden";
+            confirm_value.name = "confirm_value";
+            if (confirm("Please confirm Update value, Before Click OK Button")) {
+                confirm_value.value = "Yes";
+                document.forms[0].appendChild(confirm_value);
+            } else {
+                confirm_value.value = "No";
+                document.forms[0].appendChild(confirm_value);
+            }
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#txtRateId').hide();
+        //--------------------------------------------------------------------//
+        $("#ddlVehicleType1").change(function () {
+
+            var VehicleType = $(this).val();
+
+            if (VehicleType != null) {
+                debugger;
+                $.ajax({
+                    url: "/Customer/GetRateDetails/",
+                    typr: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    data: { VehicleType1: $("#ddlVehicleType1").val() },  //send name to another method
+                    success: function (result) {
+                        //$('#txtSiteType').val(result.SiteType);
+                        $.each(result, function (i, data) {
+                            /*  $('#ddlSiteType').append("<option value='" + data.SiteType + "'>" + data.SiteType + "</option>");*/
+
+                            $('#txtRate').val(data.SiteRate);
+                            $('#txtRateId').val(data.RateID);
+
+                            $('#txtRateId').hide();
+                            var SiteType1 = $("#txtRate").val();
+
+    
+                        })
+                    },
+                    error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+                return false;
+            }
+            else {
+                alert('Vehicle Type Null!');
+            }
+        });
+    });
+
+
+
+
+</script>
+
+

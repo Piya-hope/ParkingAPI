@@ -1,0 +1,55 @@
+﻿body {
+}
+
+/* New For Font Size
+*/
+.font-12 {
+   font-size:12px;
+}
+
+.font-13 {
+   font-size:13px;
+}
+.font-14 {
+   font-size:14px;
+}
+
+.font-15 {
+   font-size:15px;
+}
+.font-16 {
+   font-size:16px;
+}
+.font-17 {
+   font-size:17px;
+}
+.font-18 {
+   font-size:18px;
+}
+.Uppercase {
+    text-transform: uppercase;
+}
+.topline
+{
+  border-top: 1px solid #eee;
+}
+bottomline {
+    border-bottom: 1px solid #eee;
+}
+
+ .border-right 
+ {
+  border-right: 1px solid #f0f0f0;
+ }
+ .myLink      
+ {
+            margin-bottom:20px;
+            color:red;
+            font-weight:bold;
+
+ }
+
+.toplineop {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}

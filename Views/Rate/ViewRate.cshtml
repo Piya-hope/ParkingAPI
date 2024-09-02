@@ -1,0 +1,378 @@
+﻿@model IEnumerable<ParkingSystem.Models.Rate>
+@{
+    ViewBag.Title = "ViewRate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("ViewRate", "Rate")"><i class="active"></i>Rate</a></li>
+                </ol>
+            </section>
+            <br />
+            <!-- /.design work-->
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <h4 class="box-title">Rate Details</h4>
+                                <br />
+                                <input type="button" value="Add New Rate" class="btn btn-primary btn-default" TabIndex="14" onclick="location.href='@Url.Action("AddRate", "Rate")'" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All Rate Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblRate" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Rate_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Vehicle_Type)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SiteName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SiteType)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.RateAmounts)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FreeMinute)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ExtraHourCharges)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NightCharge)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.StartTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EndTime)
+                                    </th>
+                                    <th>Edit</th>
+                                    <th style="color:red;"> Delete</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true)
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Rate_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RateAmounts)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FreeMinute)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExtraHourCharges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NightCharge)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EndTime)
+                                            </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                @Html.ActionLink("Edit", "EditRate", new { id = item.Rate_ID })
+                                            </td>
+                                            <td style="color:red;">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                @Html.ActionLink("Delete", "DeleteRate", new { id = item.Rate_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Rate_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RateAmounts)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FreeMinute)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExtraHourCharges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NightCharge)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EndTime)
+                                            </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                @Html.ActionLink("Edit", "EditRate", new { id = item.Rate_ID })
+                                            </td>
+                                            <td style="color:red;">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                @Html.ActionLink("Delete", "DeleteRate", new { id = item.Rate_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                            @if (ViewBag.Message != null)
+                            {
+                                <text>
+                                    <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                            });
+                                    </script>
+                                </text>
+                            }
+                        </div>
+                    </div>
+
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <h4 class="box-title">Rate Details</h4>
+                                <br />
+                                <div class="col-md-6 col-sm-6 col-lg-6">
+                                    <input type="button" value="Add New Rate" class="btn btn-primary btn-default" TabIndex="14" onclick="location.href='@Url.Action("AddRate", "Rate")'" />
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 " style="padding-top: 10px;">
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="form-group">
+                                            <h4 style="font:bold 14px arial,verdana">Site Name</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            @Html.DropDownList("Site_ID", new SelectList(ViewBag.SitedeptList1 as IEnumerable<ParkingSystem.Models.Rate>, "Site_ID", "SiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite11", onchange = "document.location.href = '/Rate/GetRateDetails?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All Rate Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblRate" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Rate_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Vehicle_Type)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SiteName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SiteType)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.RateAmounts)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.FreeMinute)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ExtraHourCharges)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NightCharge)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.StartTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EndTime)
+                                    </th>
+                                    <th>Edit</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true)
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Rate_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RateAmounts)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FreeMinute)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExtraHourCharges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NightCharge)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EndTime)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "EditRate", new { id = item.Rate_ID })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Rate_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiteType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RateAmounts)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FreeMinute)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExtraHourCharges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NightCharge)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.EndTime)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "EditRate", new { id = item.Rate_ID })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                            @if (ViewBag.Message != null)
+                            {
+                                <text>
+                                    <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                            });
+                                    </script>
+                                </text>
+                            }
+                        </div>
+                    </div>
+
+                </section>
+            }
+
+        </div>
+    </div>
+}
+
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblRate").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+<!-- /.row -->

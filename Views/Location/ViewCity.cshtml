@@ -1,0 +1,440 @@
+﻿@model IEnumerable<ParkingSystem.Models.LocationModel>
+@{
+    ViewBag.Title = "View City";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("ViewCity", "Location")"><i class="active"></i>View District</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin" || Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Add City Details</strong></div>
+                                <div class="panel-body">
+                                    <button type="button" id="btnShowpop" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-mrole" style="margin-right:20px;" onclick="clearTextBox();">
+                                        Add New City
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View City Details</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblCity" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.City_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.City_Name)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.District_Name)
+                                            </th>
+                                            <th>Edit</th>
+                                            <th style="color:red;">Delete</th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.City_Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.City_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.City_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.District_Name)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" id="btnGetByID" onclick="GetCityDetails(@item.City_ID)">	<span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete" onclick="DeleteCity(@item.City_ID)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.City_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.City_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.District_Name)
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success btn-flat" style="font-weight:bold" id="btnGetByID14" onclick="GetCityDetails(@item.City_ID)">	<span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                                    </td>
+                                                    <td style="color:red">
+                                                        <button type="button" class="btn btn-danger btn-flat" id="btnDelete14" onclick="DeleteCity(@item.City_ID)"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            }
+                @* Insertion Modelpopup *@
+                <div class="modal fade" id="modal-mrole">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16">Add New City</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:200px">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="District" class="font-13">District</label><span style="color: #FF0000">*</span>
+                                                <select class="form-control" id="District" placeholder="Please Select District">
+                                                    <option>---Select District---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="City" class="font-13">City</label><span style="color: #FF0000">*</span>
+                                                <input type="text" class="form-control" id="City" placeholder="Enter New City" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" id="btnAdd" onclick="return AddCity();">Save</button>
+                                    <button type="button" class="btn btn-default pull-right" id="insertclose" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* Updation Modelpopup *@
+                <div class="modal fade" id="modal-Update">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16"> Update City Details</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:200px">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <input type="hidden" id="hfId" name="CityId">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="DistrictUpdate" class="font-13">District</label><span style="color: #FF0000">*</span>
+                                                <select class="form-control" id="DistrictUpdate" placeholder="Please Select District">
+                                                    <option>---Select District---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="City_Name" class="font-13">City</label><span style="color: #FF0000">*</span>
+                                                <input type="text" class="form-control" id="txtUpdateName" name="Name" placeholder="Enter New City" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="Meassage">@ViewBag.Meassage</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" id="btnUpdate" onclick="return UpdateCity();">Update</button>
+                                    <button type="button" class="btn btn-default pull-right" id="updateclose" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+}
+@* table script *@
+<script>
+        $(function () {
+            $("#tblCity").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+                "sScrollY": "250",
+                "sScrollX": "10%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "paging": true,
+                "bPaginate": true,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": true,
+                "scrollX": true,
+                "font-size": "12px",
+            });
+        });
+</script>
+<!-- /.row -->
+<script>
+        //Page Load
+        $(document).ready(function () {
+            GetDistrict();
+            GetUpdateDistrict();
+        });
+
+
+        //Function for getting the Bind City....................data.District_Name
+        function GetDistrict() {
+            var State = jQuery("#District").val();
+            jQuery('#District').empty();
+            jQuery('#District').html('<option Value="">Please Select District</option>');
+
+            $.ajax({
+                url: "/Location/BindDistrict/",
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#District').append("<option value='" + data.District_Name + "'>" + data.District_Name + "</option>");
+                    })
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+            return false;
+        }
+
+        //Function for getting the Bind City For Update
+        function GetUpdateDistrict() {
+            var State = jQuery("#DistrictUpdate").val();
+            jQuery('#DistrictUpdate').empty();
+            jQuery('#DistrictUpdate').html('<option Value="">Please Select District</option>');
+
+            $.ajax({
+                url: "/Location/BindDistrict/",
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#DistrictUpdate').append("<option value='" + data.District_Name + "'>" + data.District_Name + "</option>");
+                    })
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+            return false;
+        }
+
+        //Add Data Function
+        function AddCity() {
+            var res = validate();
+            if (res == false) {
+                return false;
+            }
+            var empObj = {            
+                City_Name: $('#City').val(),
+                District_Name: $('#District').val(),
+            };
+            $.ajax({
+                url: "/Location/AddCity",
+                data: JSON.stringify(empObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#modal-mrole').modal('hide');
+                    alert(result);
+                    location.reload();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+
+    //Function for getting the Data Based upon City ID
+        function GetCityDetails(id) {
+            $.ajax({
+                url: "/Location/GetCityDetails/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response,data) {
+                    $('#hfId').val(response.City_ID);  //#html_id .val(respon.bindingid)
+                    $('#txtUpdateName').val(response.City_Name);
+                    $("#DistrictUpdate").val(response.District_Name);
+
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+    //function for updating City's record
+        function UpdateCity() {
+            var res = validate1();
+            if (res == false) {
+                return false;
+            }
+            var empObj = {
+                City_ID: $('#hfId').val(),
+                City_Name: $('#txtUpdateName').val(),
+                District_Name: $('#DistrictUpdate').val(),
+            };
+            $.ajax({
+                url: "/Location/UpdateCity",
+                data: JSON.stringify(empObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#modal-Update').modal('hide');
+                    $('#hfId').val("");
+                    $('#txtUpdateName').val("");
+                    $('#DistrictUpdate').val("");
+
+                    alert(result);
+                    location.reload();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+    //function for deleting City's record
+        function DeleteCity(ID) {
+            var ans = confirm("Are you sure you want to delete this Record?");
+            if (ans) {
+                $.ajax({
+                    url: "/Location/DeleteCity/" + ID,
+                    type: "POST",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (result) {
+                        alert(result);
+                        location.reload();
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+
+        //Valdidation using jquery
+        function validate() {
+            var isValid = true;
+
+            if ($('#City').val().trim() == "") {
+                $('#City').css('border-color', 'Red', 'border-size:10px');
+                isValid = false;
+            }
+            else {
+                $('#City').css('border-color', 'lightgrey');
+            }
+            if ($('#District').val().trim() == "") {
+                $('#District').css('border-color', 'Red', 'border-size:10px');
+                isValid = false;
+            }
+            else {
+                $('#District').css('border-color', 'lightgrey');
+            }
+
+
+            return isValid;
+        }
+
+        function validate1() {
+            var isValid = true;
+            if ($('#txtUpdateName').val().trim() == "") {
+                $('#txtUpdateName').css('border-color', 'Red', 'border-size:10px');
+                isValid = false;
+            }
+            else {
+                $('#txtUpdateName').css('border-color', 'lightgrey');
+            }
+            if ($('#DistrictUpdate').val().trim() == "") {
+                $('#DistrictUpdate').css('border-color', 'Red', 'border-size:10px');
+                isValid = false;
+            }
+            else {
+                $('#DistrictUpdate').css('border-color', 'lightgrey');
+            }
+            return isValid;
+        }
+
+        //Function for clearing the textboxes
+        function clearTextBox() {
+            $('#District').val("");
+            $('#City').val("");
+            $('#District').css('border-color', 'lightgrey');
+            $('#City').css('border-color', 'lightgrey');
+        }
+</script>
+

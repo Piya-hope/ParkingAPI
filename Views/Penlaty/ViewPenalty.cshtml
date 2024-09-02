@@ -1,0 +1,290 @@
+﻿@model IEnumerable<ParkingSystem.Models.Penlaty>
+@{
+    ViewBag.Title = "View Penalty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("ViewPenalty","Penlaty")"><i class="active"></i>View Penlaty</a></li>
+                </ol>
+            </section>
+            <br />
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Add Penalty</strong></div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding: 8px 30px;">
+                                        <input type="submit" value="Add Penalty" class="btn btn-primary btn-default" TabIndex="13" id="btnAdd1" onclick="location.href='@Url.Action("AddPenalty", "Penlaty")'" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Penalty Details</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblPenalty" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Penlaty_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PenaltyName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Reason)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Charges)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>Edit</th>
+                                            <th style="color:red;">Delete</th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.PenaltyName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Charges)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                        @Html.ActionLink("Edit", "EditPenalty", new { id = item.Penlaty_ID })
+                                                    </td>
+                                                    <td style="color:red;">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                        @Html.ActionLink("Delete", "DeletePenalty", new { id = item.Penlaty_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.PenaltyName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Charges)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                        @Html.ActionLink("Edit", "EditPenalty", new { id = item.Penlaty_ID })
+                                                    </td>
+                                                    <td style="color:red;">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                        @Html.ActionLink("Delete", "DeletePenalty", new { id = item.Penlaty_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Add Penalty</strong></div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding: 8px 30px;">
+                                        <div class="col-md-6 col-sm-6 col-lg-6">
+                                            <input type="submit" value="Add Penalty" class="btn btn-primary btn-default" TabIndex="13" id="btnAdd1" onclick="location.href='@Url.Action("AddPenalty", "Penlaty")'" />
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-lg-6 " style="padding-top: 10px;">
+                                            <div class="col-md-4 col-sm-4 col-lg-4">
+                                                <div class="form-group">
+                                                    <h4 style="font:bold 14px arial,verdana">Site Name</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-lg-6">
+                                                <div class="form-group">
+                                                    @Html.DropDownList("Site_ID", new SelectList(ViewBag.SitedeptList1 as IEnumerable<ParkingSystem.Models.Penlaty>, "Site_ID", "SiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite11", onchange = "document.location.href = '/Penlaty/GetPenaltyDetails?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Penalty Details</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblPenalty" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Penlaty_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PenaltyName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Reason)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Charges)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>Edit</th>
+                                            <th style="color:red;">Delete</th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Status1 == true)
+                                            {
+                                                <tr style="color:blue;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.PenaltyName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Charges)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Edit", "EditPenalty", new { id = item.Penlaty_ID })
+                                                    </td>
+                                                    <td style="color:red;">
+                                                        <input type="button" value="Delete" class="btn btn-danger" style="width:80px" TabIndex="14" onclick="location.href='@Url.Action("Delete", "Penlaty", new { id = item.Penlaty_ID })'" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr style="color:red;">
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Penlaty_ID)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.PenaltyName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Charges)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.SiteName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Edit", "EditPenalty", new { id = item.Penlaty_ID })
+                                                    </td>
+                                                    <td style="color:red;">
+                                                        <input type="button" value="Delete" class="btn btn-danger" style="width:80px" TabIndex="14" onclick="location.href='@Url.Action("Delete", "Penlaty", new { id = item.Penlaty_ID })'" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblPenalty").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+

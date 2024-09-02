@@ -1,0 +1,203 @@
+﻿@model IEnumerable<ParkingSystem.Models.LogsModel>
+@{
+    ViewBag.Title = "View Activity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    if (Session["Designation"].ToString() == "Admin")
+    {
+        <div class="content-wrapper">
+            <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a href="#"><i class="active"></i>Setting</a></li>
+                        <li><a href="@Url.Action("ViewLogActivity", "Logs")"><i class="active"></i>View Logs</a></li>
+                    </ol>
+                </section>
+                <br />
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Activity Logs Details</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblLOGS" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Log_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityFor)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityForName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityBy)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Designation)
+                                            </th>
+                                        </tr>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr style="color:blue;">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Log_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityFor)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityForName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityBy)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SiteName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    }
+    else if (Session["Designation"].ToString() == "Supervisor")
+    {
+        <div class="content-wrapper">
+            <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a href="#"><i class="active"></i>Setting</a></li>
+                        <li><a href="@Url.Action("ViewLogActivity", "Logs")"><i class="active"></i>View Logs</a></li>
+                    </ol>
+                </section>
+                <br />
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Activity Logs Details</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblLOGS" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead></thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Log_ID)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityFor)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityForName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ActivityBy)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.SiteName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Designation)
+                                            </th>
+                                        </tr>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr style="color:blue;">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Log_ID)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityFor)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityForName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityDate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ActivityBy)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SiteName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Designation)
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    }
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblLOGS").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "300",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+            "aaSorting": [[0, 'desc']]
+        });
+    });
+</script>

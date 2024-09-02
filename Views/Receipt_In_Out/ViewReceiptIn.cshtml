@@ -1,0 +1,179 @@
+﻿@model ParkingSystem.Models.ReceiptInOut
+@{
+    ViewBag.Title = "Receipt VehicleIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Sales</a></li>
+                    <li><a href="#"><i class="active"></i>Receipt</a></li>
+                    <li><a href="@Url.Action("ViewReceiptIn","Receipt_In_Out")"><i class="active"></i>Receipt_VehicleIn Time</a></li>
+                </ol>
+            </section>
+            <br />
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Add Receipt Details</strong></div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("ViewReceiptIn", "Receipt_In_Out", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Vehicle_Number, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Vehicle_Number, new { @class = "form-control", @placeholder = "Enter Vehicle_Number" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control" })
+                                                    @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.In_Time, htmlAttributes: new { @class = "control-label" })
+                                                    <span style="color: #FF0000">*</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.In_Time, new { @class = "form-control", @placeholder = "Enter Vehicle In Datetime", @Value = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <center>
+                                                <input type="submit" value="Save" class="btn btn-primary btn-flat" TabIndex="13" id="Save" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Receipt_In_Out")'" />
+                                            </center>
+                                            <br />
+                                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>View Vehicle In Receipt</strong>
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="invoice">
+                                    <!-- title row -->
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12 col-sm-12">
+                                            <center>
+                                                <span class="logo-mini"><img src="~/Images/M_Plus_Parking_SystemLogo.jpg" style="width:50px;height:50px" /></span>
+                                                <br />
+                                                <h2 class="page-header">
+                                                    [SiteName]
+                                                    <br /> M PLUS PARKING SERVICES P LTD
+                                                </h2>
+                                            </center>
+                                            <br />
+                                        </div>
+
+                                        <center>
+                                            <h3>  <span class="font-18"> Receipt Vehicle IN </span></h3>
+                                            <br />
+                                            <small>Date:@Html.Label((string)ViewBag.GetDate)</small>
+                                        </center>
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="row invoice-info">
+                                        <center>
+                                            Receipt No. :SSA 001
+                                            <br />
+                                            Vehicle No.: MH17 CQ-2112
+                                            <br />
+                                            Vehicle Type: 4 CAR
+                                            <br />
+                                            In Time:03/11/2022 18:00:38                                          
+                                             <br />
+                                           Opeartor_ID:02
+                                        </center>
+                                        <br />
+                                        <center>
+                                            <p class="topline">
+                                                <strong>Thank you for your business!</strong>
+                                                <br />
+                                                Terms And Conditions
+                                                <br />
+                                                Displayed At Counter
+                                                <br />
+                                                GST No ____,
+                                                Rate Incl of Taxes
+                                            </p>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+    @* table script *@
+    <script>
+        $(function () {
+            $("#tblPenalty").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+                "sScrollY": "250",
+                "sScrollX": "10%",
+                "sScrollXInner": "100%",
+                "scrollCollapse": true,
+                "paging": true,
+                "bPaginate": true,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": true,
+                "scrollX": true,
+                "font-size": "12px",
+            });
+        });
+    </script>
+

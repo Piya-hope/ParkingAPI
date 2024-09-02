@@ -1,0 +1,147 @@
+﻿@model ParkingSystem.Models.Penlaty
+@{
+    ViewBag.Title = "Add Penlaty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="@Url.Action("ViewPenalty","Penlaty")"><i class="active"></i>View Penlaty</a></li>
+                    <li><a href="@Url.Action("AddPenalty","Penlaty")"><i class="active"></i>Add Penlaty</a></li>
+                </ol>
+            </section>
+            <br />
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Penlaty Setting</strong></div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("AddPenalty", "Penlaty", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.PenaltyName, htmlAttributes: new { @class = "control-label" })
+                                                <span style="color: #FF0000">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(model => model.PenaltyName, new { @class = "form-control", @placeholder = "Enter Penalty Name" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                <span style="color: #FF0000">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SitedeptList, "SiteName", "SiteName"), "Please Select Site", new { @class = "form-control" })
+                                                @Html.HiddenFor(model => model.SiteName, new { @id = "hdnSiteId" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label" })
+                                                <span style="color: #FF0000">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(model => model.Reason, new { @class = "form-control", @placeholder = "Enter Penalty Reason" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Enter Penalty Description" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Charges, htmlAttributes: new { @class = "control-label" })
+                                                <span style="color: #FF0000">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(model => model.Charges, new { @class = "form-control", @placeholder = "Enter Penalty Charges" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <center>
+                                                <input type="submit" value="Save" class="btn btn-primary btn-flat" TabIndex="13" id="Save" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("Clear", "Penlaty")'" />
+                                            </center>
+                                            <br />
+                                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                                            @if (ViewBag.Message != null)
+                                            {
+                                                <text>
+                                                    <script>
+                                                            $(document).ready(function () {
+                                                                alert('@ViewBag.Message');
+                                                            });
+                                                    </script>
+                                                </text>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+}
+
+
+

@@ -1,0 +1,454 @@
+﻿@model ParkingSystem.Models.VehicleReport
+@{
+    ViewBag.Title = "Vehicle Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        //$("#Start_Date").datepicker();
+        $("#Date").datepicker();
+        ({
+            showOn: 'button',
+            buttonImageOnly: true,
+            autoclose: true,
+            buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+        });
+    });
+</script>
+
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Report</a></li>
+                    <li><a href="@Url.Action("ViewVehicleReport", "VehicleReport")"><i class="active"></i>View Vehicle Report</a></li>
+                </ol>
+            </section>
+            <br />
+            @using (Html.BeginForm("SearchVehicleReport", "VehicleReport", FormMethod.Post, new { @class = "form-box", role = "form", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>Vehicle Report</strong></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label" })
+                                                    @*<span style="color: #FF0000">*</span>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.DropDownListFor(model => model.SiteName, new SelectList(ViewBag.SiteNameList, "SiteName", "SiteName"), "Please Select Site Name", new { @class = "form-control", onchange = "document.location.href = '/VehicleReport/PartialVehicleReport?SiteName=' + this.options[this.selectedIndex].value;" })
+                                                    @Html.HiddenFor(model => model.Site_ID, new { @id = "hdnSiteName_ID" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Vehicle_Type, htmlAttributes: new { @class = "control-label" })
+                                                    @*<span style="color: #FF0000">*</span>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.DropDownListFor(model => model.Vehicle_Type, new SelectList(ViewBag.VehicleTypeList, "Vehicle_Type", "Vehicle_Type"), "Please Select Vehicle_Type", new { @class = "form-control" })
+                                                    @Html.HiddenFor(model => model.Vehicle_Type, new { @id = "hdnVehicesTypes_ID" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
+                                                    @*<span style="color: #FF0000">*</span>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <div class="input-group date">
+                                                        @Html.TextBoxFor(model => model.Date, "{0:dd/MM/yyyy}", new { @class = "form-control", @placeholder = "Enter Date" })
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Vehicle_Number, htmlAttributes: new { @class = "control-label" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(model => model.Vehicle_Number, new { @class = "form-control", @placeholder = "Enter  Vehicle_Number" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <br />
+
+                                    @*<div class="row">
+                                            <div class="col-md-6" style="font-size: 12px;">
+                                                Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                            </div>
+                                        </div>*@
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <center>
+                                                <button type="submit" value="Export" class="btn btn-success btn-flat" TabIndex="18" id="btnExport1" onclick="location.href='@Url.Action("ExportPDF", "VehicleReport")'"> <i class="fa fa-fw fa-file-pdf-o"> </i>&nbsp;Export To Pdf</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                <input type="submit" value="Get Report" class="btn btn-primary btn-flat" TabIndex="13" id="GetReport" onclick="location.href='@Url.Action("SearchVehicleReport", "VehicleReport")'" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="button" value="Cancel" class="btn btn-danger btn-flat" TabIndex="14" onclick="location.href='@Url.Action("ClearVehicleReport", "VehicleReport")'" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                @*<button type="submit" value="Email" class="btn btn-outline-info btn-flat" TabIndex="13" id="Export" onclick="location.href='@Url.Action("Mail", "VehicleReport")'"> <i class="glyphicon glyphicon-envelope"> </i>&nbsp;&nbsp;Send Email</button>*@
+                                                <button type="button" id="btnShowpop" class="btn btn-outline-info btn-flat" TabIndex="19" data-toggle="modal" data-target="#modal-mrole" style="margin-right:20px;" onclick="clearTextBox();">
+                                                    <i class="glyphicon glyphicon-envelope"> </i>
+                                                    &nbsp;Send Email
+                                                </button>
+
+                                                <button type="button" id="btnShowpop1" class="btn btn-primary btn-flat" TabIndex="10" data-toggle="modal" data-target="#modal-editor" style="margin-right:20px;">
+                                                    <i class="glyphicon glyphicon-envelope"> </i>
+                                                    &nbsp;Send Email
+                                                </button>
+
+                                            </center>
+                                            <br />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>View Vehicle Report</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tblVehicleReport" class="table table-bordered table-striped font-12" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.SiteName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Vehicle_Number)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Vehicle_Type)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Charge_Type)
+                                                </th>
+                                                <th style="width:80px">
+                                                    @Html.DisplayNameFor(model => model.InTime)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.OutTime)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Amount)
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        @if (ViewBag.VehicleReportlistAll == null)
+                                        {
+                                            foreach (var item in (ViewBag.VehicleReportlist1 as IEnumerable<ParkingSystem.Models.VehicleReport>))
+                                            {
+                                                <tbody>
+                                                    <tr style="color: black;">
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.SiteName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Vehicle_Number)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Charge_Type)
+                                                        </td>
+                                                        <td style="width:80px">
+                                                            @Html.DisplayFor(modelItem => item.InTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.OutTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Amount)
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+
+
+                                            }
+
+                                        }
+                                        else if (ViewBag.VehicleReportlistAll != null)
+                                        {
+                                            foreach (var item in (ViewBag.VehicleReportlistAll as IEnumerable
+                                            <ParkingSystem.Models.VehicleReport>
+                                                ))
+                                            {
+                                                <tbody class="panel-footer">
+                                                    <tr style="color: black;">
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.SiteName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Vehicle_Number)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Vehicle_Type)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Charge_Type)
+                                                        </td>
+                                                        <td style="width:80px">
+                                                            @Html.DisplayFor(modelItem => item.InTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.OutTime)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Amount)
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            }
+                                        }
+
+                                        <tfoot>
+                                            <tr>
+                                                <td style="border:hidden"></td>
+                                                <td style="border:hidden"></td>
+                                                <td style="border:hidden"></td>
+                                                <td style="border:hidden"></td>
+                                                <td style="border:hidden"></td>
+                                                <td style="border:hidden" align="center">Total Amount</td>
+                                                <td style="color:blue;">@ViewBag.TotalAmount</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                @* Insertion Modelpopup *@
+                <div class="modal fade" id="modal-mrole">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header with-border">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="box-title font-16">Sending Email</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:111px">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="Email" class="font-13">Email</label><span style="color: #FF0000">*</span>
+                                                <input type="email" class="form-control" id="txtEmail" placeholder="Enter Email" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8" style="font-size: 12px;">
+                                            Note: <span style='color:#FF0000;font-size:12px'>*</span> indicate required field.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-flat" id="btnSendEmail" onclick="return SendEmail();">SEND EMAIL</button>
+                                    <button type="button" class="btn btn-default btn-flat pull-right" id="insertclose" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @* Editor Modelpopup *@
+                <div class="modal fade" id="modal-editor">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="modal-body" style="height:811px">
+                                    <div class="row">
+                                        @* Email Editor *@
+                                        <!-- quick email widget -->
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <i class="fa fa-envelope"></i>
+
+                                                <h3 class="box-title">Quick Email</h3>
+                                                <!-- tools box -->
+                                                <div class="pull-right box-tools">
+                                                    <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- /. tools -->
+                                            </div>
+                                            <div class="box-body">
+                                                <form action="#" method="post">
+                                                    <div class="form-group">
+                                                        <input type="email" class="form-control" name="emailto" placeholder="Email to:">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="subject" placeholder="Subject">
+                                                    </div>
+
+                                                    <div>
+                                                        <textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="box-footer clearfix">
+                                                <button type="button" class="pull-right btn btn-default" id="sendEmail">
+                                                    Send
+                                                    <i class="fa fa-arrow-circle-right"></i>
+                                                </button>
+                                                <button type="submit" class="btn btn-primary btn-flat" id="btnSendEmaileditor" onclick="return SendEmail1();">SEND EMAIL</button>
+                                                <button type="button" class="btn btn-default btn-flat pull-right" id="insertclose" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblVehicleReport").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    function ExportPDF1() {
+
+        var table = $("#tblVehicleReport");
+        var screendata = tableParser(table);
+        var Screentable = { VehicleReportlist: screendata };//modelvariable=model list class
+
+        $.ajax({
+            url: "/VehicleReport/ExportPDF",
+            type: 'POST',
+            data: JSON.stringify(Screentable),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () { alert("Got it"); }
+        });
+    }
+</script>
+
+<script>
+    //SendEmail Data Function
+    function SendEmail() {
+        var res = validate();
+        if (res == false) {
+            return false;
+        }
+        var empObj = {
+            Email: $('#txtEmail').val()
+        };
+        $.ajax({
+            url: "/VehicleReport/SendEmail",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#modal-mrole').modal('hide');
+                alert(result);
+                location.reload();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+
+
+    //Valdidation using jquery
+    function validate() {
+        var isValid = true;
+        if ($('#txtEmail').val().trim() == "") {
+            $('#txtEmail').css('border-color', 'Red', 'border-size:10px');
+            isValid = false;
+        }
+        else {
+            $('#txtEmail').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
+
+
+    //Function for clearing the textboxes
+    function clearTextBox() {
+        $('#txtEmail').val("");
+        $('#txtEmail').css('border-color', 'lightgrey');
+    }
+</script>
+
+
+
+
+

@@ -1,0 +1,241 @@
+﻿@model IEnumerable<ParkingSystem.Models.TaxModel>
+@{
+    ViewBag.Title = "ViewTax";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>Setting</a></li>
+                    <li><a href="@Url.Action("ViewTax", "Tax")"><i class="active"></i>Tax</a></li>
+                </ol>
+            </section>
+            <br />
+
+            @if (Session["Designation"].ToString() == "Admin")
+            {
+                <!-- /.design work-->
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <h4 class="box-title">Tax Details</h4>
+                                <br />
+                                <input type="button" value="Add New Tax" class="btn btn-primary btn-default" TabIndex="14" onclick="location.href='@Url.Action("AddTax", "Tax")'" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All Tax Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblTax" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Tax_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Tax_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Amount)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    <th>Edit</th>
+                                    <th style="color:red;"> Delete</th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true)
+                                    {
+                                        <tr style="color:blue;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                @Html.ActionLink("Edit", "EditTax", new { id = item.Tax_ID })
+                                            </td>
+                                            <td style="color:red;">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                @Html.ActionLink("Delete", "DeleteTax", new { id = item.Tax_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-edit" style="color: #337ab7"></span>
+                                                @Html.ActionLink("Edit", "EditTax", new { id = item.Tax_ID })
+                                            </td>
+                                            <td style="color:red;">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                @Html.ActionLink("Delete", "DeleteTax", new { id = item.Tax_ID }, new { onclick = "return confirm('Are you sure wants to delete?');", @style = "color: red;" })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                            @if (ViewBag.Message != null)
+                            {
+                                <text>
+                                    <script>
+                                $(document).ready(function () {
+                                    alert('@ViewBag.Message');
+                                });
+                                    </script>
+                                </text>
+                            }
+                        </div>
+                    </div>
+
+                </section>
+            }
+            else if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All Tax Details</h4>
+                        </div>
+                        <div class="box-body">
+                            <table id="tblTax" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Tax_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Tax_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Amount)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (item.Status1 == true)
+                                    {
+                                        <tr style="color:blue;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tax_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                            @if (ViewBag.Message != null)
+                            {
+                                <text>
+                                    <script>
+                                $(document).ready(function () {
+                                    alert('@ViewBag.Message');
+                                });
+                                    </script>
+                                </text>
+                            }
+                        </div>
+                    </div>
+
+                </section>
+            }
+        </div>
+    </div>
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblTax").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+<!-- /.row -->

@@ -1,0 +1,266 @@
+﻿@model ParkingSystem.Models.EmployeeModel
+@{
+    ViewBag.Title = "ViewEmployee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a href="#"><i class="active"></i>User Management</a></li>
+                    <li><a href="@Url.Action("ViewEmployeeManager", "Employee")"><i class="active"></i>View User</a></li>
+                </ol>
+            </section>
+            <br />
+            <!-- /.design work-->
+            @if (Session["Designation"].ToString() == "Manager")
+            {
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 " style="padding-top: 10px;">
+                                    <div class="col-md-4 col-sm-4 col-lg-4">
+                                        <div class="form-group">
+                                            <h4 style="font:bold 14px arial,verdana">Site Name</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(model => model.EmpSiteName, new SelectList(ViewBag.SitedeptList, "EmpSiteID", "EmpSiteName"), "Please Select Site", new { @class = "form-control", id = "ddlSite", onchange = "document.location.href = '/Employee/GetRecord?SiteID1=' + this.options[this.selectedIndex].value;" })
+                                            @Html.HiddenFor(model => model.EmpSiteID, new { @id = "hdnSiteId" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row" style="padding: 8px 30px;">
+                                <span style="font-weight: bold; font-size: large;" class="text-success no-margin">User Summary</span>
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3 style="font-weight:normal">
+                                                @Html.Label((string)ViewBag.Total)
+                                            </h3>
+                                            <p style="color:blue">Total User</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalActive)
+
+                                            </h3>
+                                            <p class="text-success no-margin">
+                                                Active User
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3">
+                                        <div class="inner">
+                                            <h3>
+                                                @Html.Label((string)ViewBag.TotalInActive)
+                                            </h3>
+                                            <p class="text-danger bold">InActive User</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*//}*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">View All User Details</h4>
+
+                        </div>
+                        <div class="box-body" id="idview1">
+                            <table id="tblUser" class="table table-bordered table-striped font-12" style="width:100%">
+                                <thead></thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Mobile_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.EmpSiteName)
+                                    </th>
+                                    <th style="min-width: 70px;">
+                                        @Html.DisplayNameFor(model => model.DOB)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Gender)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Document)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Address)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </th>
+                                    <th>Edit</th>
+                                </tr>
+
+                                @foreach (var item1 in (ViewBag.Emplist as IEnumerable<ParkingSystem.Models.EmployeeModel>))
+                                {
+                                    if (@item1.Status1 == true)
+                                    {
+                                        <tr style="color:green;">
+                                            <td>
+                                                @item1.User_ID
+                                            </td>
+                                            <td>
+                                                @item1.User_Name
+                                            </td>
+                                            <td>
+                                                @item1.Mobile_No
+                                            </td>
+                                            <td>
+                                                @item1.Email_Id
+                                            </td>
+                                            <td>
+                                                @item1.Designation
+                                            </td>
+                                            <td>
+                                                @item1.EmpSiteName
+                                            </td>
+                                            <td>
+                                                @item1.DOB
+                                            </td>
+                                            <td>
+                                                @item1.Gender
+                                            </td>
+                                            <td>
+                                                @item1.Document
+                                            </td>
+                                            <td>
+                                                @item1.Address
+                                            </td>
+                                            <td>
+                                                @item1.Description
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "EditEmployee", new { id = @item1.User_ID })
+                                            </td>
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="color:red;">
+                                            <td>
+                                                @item1.User_ID
+                                            </td>
+                                            <td>
+                                                @item1.User_Name
+                                            </td>
+                                            <td>
+                                                @item1.Mobile_No
+                                            </td>
+                                            <td>
+                                                @item1.Email_Id
+                                            </td>
+                                            <td>
+                                                @item1.Designation
+                                            </td>
+                                            <td>
+                                                @item1.EmpSiteName
+                                            </td>
+                                            <td>
+                                                @item1.DOB
+                                            </td>
+                                            <td>
+                                                @item1.Gender
+                                            </td>
+                                            <td>
+                                                @item1.Document
+                                            </td>
+                                            <td>
+                                                @item1.Address
+                                            </td>
+                                            <td>
+                                                @item1.Description
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "EditEmployee", new { id = @item1.User_ID })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </table>
+                        </div>
+
+
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+}
+<!-- table script -->
+<script>
+    $(function () {
+        $("#tblUser").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true
+        });
+    });
+</script>
+
+@*<script>
+        $(document).ready(function () {
+            $("#ddlSite").on("change", function () {
+                $.ajax(
+                    {
+                        url: '/Employee/GetRecord',
+                        type: 'GET',
+                        data: { SiteID1: $("#ddlSite").val() },
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            $('#_GetRecordPartial').html(data);//html domreplace
+
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+            });
+        });
+    </script>*@
+
+
+
+

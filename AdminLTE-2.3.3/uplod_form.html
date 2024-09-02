@@ -1,0 +1,289 @@
+ <style type="text/css">
+        .auto-style1
+        {
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+            font-size: x-large;
+            border-bottom: 1px solid transparent;
+            padding: 10px 15px;
+        }
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <link href="../../AdminLTE-2.3.3/bootstrap/css/pikaday.css" rel="stylesheet" />
+    <link href="../../AdminLTE-2.3.3/bootstrap/css/theme.css" rel="stylesheet" />
+    <link href="../../AdminLTE-2.3.3/bootstrap/css/triangle.css" rel="stylesheet" />  
+    <script src="../../AdminLTE-2.3.3/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <link href="../../AdminLTE-2.3.3/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(function () {
+            $("[id$=txtDate]").datepicker();
+
+            ({
+                showOn: 'button',
+                buttonImageOnly: true,
+                autoclose: true,
+                buttonImage: 'http://jqueryui.com/demos/datepicker/images/calendar.gif'
+            });
+        });
+    </script>
+    <script type = "text/javascript">
+        function DisableButtons() {
+            var inputs = document.getElementsByTagName("INPUT");
+            for (var i in inputs) {
+                if (inputs[i].type == "button" || inputs[i].type == "submit") {
+                    inputs[i].disabled = true;
+                }
+            }
+        }
+        window.onbeforeunload = DisableButtons;
+</script>
+ <div id="div1" runat="server" style="margin-left: 10px; margin-right: 10px;">
+   
+           <div class="row" style="padding: 8px 30px;">
+            <div class="col-lg-12 col-sm-12">
+                 <div class="alert alert-success alert-dismissible " runat="server" id="div3" style="width: 53%; height: 8%; margin: auto; border-radius: 10px; padding-top: 7px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon glyphicon glyphicon-ok"></i>Saved Successfully.</h4>
+        </div>
+                 <div class="alert alert-success alert-dismissible " runat="server" id="div_success" style="width: 53%; height: 8%; margin: auto; border-radius: 10px; padding-top: 7px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon glyphicon glyphicon-ok"></i>Logo DeActivated Successfully.</h4>
+        </div>
+        <div class="alert alert-success alert-dismissible " runat="server" id="div_activated" style="width: 53%; height: 8%; margin: auto; border-radius: 10px; padding-top: 7px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon glyphicon glyphicon-ok"></i>Logo Activated Successfully.</h4>
+        </div>
+                </div>
+               </div>
+
+    
+		</div>
+     <section class="content-header">
+      <ol class="breadcrumb">
+        <li><a href="AdminDashboard.aspx"><i class="fa fa-dashboard"></i> Home</a></li>
+           <li><a href="AdminDashboard.aspx"><i class="active"></i> Setting</a></li>
+           <li><a href="AddLogoandCompanyName.aspx"><i class="active"></i> Add Logo</a></li>
+         
+     </ol>
+    </section>
+    <br />
+    <br />
+ 		<section class="content">
+      <div class="box">
+          <div class="auto-style1"><strong>Company Details</strong></div>
+          <div class="box-body">
+             <br />
+                         <div class="row">
+                            <div class="col-md-6">
+					
+								<div class="form-group">
+		                      <asp:TextBox ID="txtName" placeholder=" Company Name" runat="server" CssClass="form-control"></asp:TextBox>
+						 <span><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="A" runat="server" ErrorMessage="Enter Company Name" ControlToValidate="txtName" ForeColor="Red"></asp:RequiredFieldValidator></span>
+                              
+                                     </div>
+										
+										</div>	
+                                  <div class="col-md-6">		
+                              <div class="form-group">
+                                    
+                                    
+                                   <asp:TextBox ID="txtMobileNo" placeholder="Mobile No" runat="server" CssClass="form-control" MaxLength="11"></asp:TextBox>
+						            <cc1:FilteredTextBoxExtender ID="MobileNo" ValidChars="0123456789" TargetControlID="txtMobileNo" runat="server"></cc1:FilteredTextBoxExtender>     
+                           
+                              </div>
+								
+                                      </div>
+                                 </div>
+               <div class="row">
+                            <div class="col-md-6">
+					
+								<div class="form-group">
+                                      <asp:TextBox ID="txtEmailSupport" placeholder="Email Support" runat="server" CssClass="form-control" ></asp:TextBox>
+						      <asp:RegularExpressionValidator ID="RegularExpressionValidator2" ControlToValidate="txtEmailSupport" runat="server" ForeColor="Red" ErrorMessage="Enter ValidEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+                     
+								</div>
+
+                            </div>
+                    <div class="col-md-6">
+					
+								<div class="form-group">
+                                      <asp:TextBox ID="txtEmailSales" placeholder="Email Sale" runat="server" CssClass="form-control" ></asp:TextBox>
+						      <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ControlToValidate="txtEmailSales" runat="server" ForeColor="Red" ErrorMessage="Enter ValidEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+                     
+								</div>
+
+                            </div>
+                   </div>
+              <br />
+                 <div class="row">
+                            <div class="col-md-6">
+					
+								<div class="form-group">
+                                    <asp:TextBox ID="txtboxWebsite" placeholder="Website" runat="server" CssClass="form-control" ></asp:TextBox>
+						
+								</div>
+
+                            </div>
+                    <div class="col-md-6">
+					
+								<div class="form-group">
+
+                              <asp:TextBox ID="txtAddress" placeholder=" Address" runat="server" CssClass="form-control" ></asp:TextBox>
+						 <span><asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="A" runat="server" ErrorMessage="Enter Address" ControlToValidate="txtAddress" ForeColor="Red"></asp:RequiredFieldValidator></span>
+                              
+                                    	</div>
+
+                            </div>
+                   </div>
+
+                  <div class="row">
+                            <div class="col-md-6">
+					
+								<div class="form-group">
+		                      <asp:FileUpload ID="FileUpload1" runat="server" />
+                        <span>  <asp:RequiredFieldValidator ID="RequiredFieldValidator18" ValidationGroup="A" runat="server" ErrorMessage="Select Logo" ControlToValidate="FileUpload1" ForeColor="Red"></asp:RequiredFieldValidator></span>
+                               
+                                     </div>
+										
+										</div>	
+                                  <div class="col-md-6">		
+                              <div class="form-group">
+                                    
+                               
+                              </div>
+								
+                                      </div>
+                                 </div>
+
+                      
+                          <div class="row">                                                     
+                            
+                                <center>
+                                        <asp:Button ID="btnSave" runat="server" CssClass="btn btn-info" ValidationGroup="A" Text="Save" />
+                            <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-info" Text="Cancel"/>
+                                   </center>         
+                            </div>
+
+        </div>
+     
+             </div>    
+	
+
+      <div class="box">
+          
+          <div class="box-body">
+ <div class="row">
+
+&nbsp;&nbsp; <asp:Label ID="lblhead" Text="View All Logo" runat="server" style="font-weight: 700; font-size: large;"></asp:Label>
+        </div>
+              <br />
+             <asp:GridView ID="GridView1" OnRowDataBound="GridView1_RowDataBound" DataKeyNames="id"   runat="server" AutoGenerateColumns="false"  Class="table table-striped table-bordered dataTables_scrollBody"  CellPadding="4" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowDeleting="GridView1_RowDeleting" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnPageIndexChanging="GridView1_PageIndexChanging" EmptyDataRowStyle-ForeColor="Red" EmptyDataRowStyle-HorizontalAlign="Center" EmptyDataText="No Records found" ShowHeaderWhenEmpty="True">
+<Columns>
+         
+       
+      <asp:TemplateField HeaderText="Id" SortExpression="Id">  
+                <EditItemTemplate>  
+                      <asp:Label ID="lblid" runat="server" Text='<%# Bind("id") %>'></asp:Label> 
+                </EditItemTemplate>  
+                <ItemTemplate>  
+                    <asp:Label ID="lblid1" runat="server" Text='<%# Bind("id") %>'></asp:Label> 
+                 </ItemTemplate>  
+            </asp:TemplateField>
+           
+   
+           <asp:TemplateField HeaderText="Company_Name" SortExpression="Company_Name">  
+                <EditItemTemplate>  
+                   <asp:TextBox ID="txtCompany_Name" runat="server" CssClass="form-control" Text='<%# Bind("Company_Name") %>'></asp:TextBox>
+               
+                 </EditItemTemplate>  
+                <ItemTemplate>
+                      <asp:Label ID="lblCompany_Name" runat="server" Text='<%# Bind("Company_Name") %>'></asp:Label>
+                   </ItemTemplate>  
+            </asp:TemplateField>
+   
+  <%-- <asp:TemplateField HeaderText="Image">
+                                <ItemTemplate>
+                                    <asp:Image ID="img_logoimage" runat="server" CssClass="image img-responsive" ImageUrl='<%# Eval("Logo") %>' Style="height: 70px; width: 70px;" />
+
+                                </ItemTemplate>
+      
+         <EditItemTemplate>
+              <asp:Image ID="img_logoimage1" runat="server" CssClass="image img-responsive" ImageUrl='<%# Eval("Logo") %>' Style="height: 70px; width: 70px;" />
+
+               <asp:FileUpload ID="fu1" runat="server" />  
+         </EditItemTemplate>
+                            </asp:TemplateField>--%>
+     <asp:TemplateField HeaderText="Image" HeaderStyle-Width="200px">
+                        <ItemTemplate>
+                            <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("Logo") %>'
+                                Height="80px" Width="100px" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:Image ID="img_user" runat="server" ImageUrl='<%# Eval("Logo") %>'
+                                Height="80px" Width="100px" /><br />
+                            <asp:FileUpload ID="FileUpload1" runat="server" />
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+      <asp:TemplateField HeaderText="Address" SortExpression="Address">  
+                <EditItemTemplate>  
+                   <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" Text='<%# Bind("Address") %>'></asp:TextBox>   
+                </EditItemTemplate>  
+                <ItemTemplate> 
+   <asp:Label ID="lblAddress" runat="server" Text='<%# Bind("Address") %>'></asp:Label> 
+           
+                </ItemTemplate>  
+            </asp:TemplateField>
+   
+      <asp:TemplateField HeaderText="Edit" ItemStyle-HorizontalAlign="Center">
+    <ItemTemplate>
+        <asp:ImageButton ID="imgBtn1" runat="server" ImageUrl="~/btn/edit.png" CommandName="Edit"/>
+    </ItemTemplate>
+    <EditItemTemplate>
+    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update" ValidationGroup="B" CommandName="Update"></asp:LinkButton>
+    <asp:LinkButton ID="lnkCancel" runat="server" Text="Cancel" CommandName="Cancel"></asp:LinkButton>
+    </EditItemTemplate>
+<ItemStyle HorizontalAlign="Center"></ItemStyle>
+    </asp:TemplateField>
+    
+    <asp:TemplateField HeaderText="Delete" ItemStyle-HorizontalAlign="Center">
+    <ItemTemplate>
+        <asp:ImageButton ID="imgDelete" runat="server" ImageUrl="~/btn/delete.png" Height="30px" Width="30px" CommandName="Delete" onclientclick="return confirm('Are you sure you want to delete?')" />
+    </ItemTemplate>
+    <EditItemTemplate>       
+    </EditItemTemplate>
+<ItemStyle HorizontalAlign="Center"></ItemStyle>
+    </asp:TemplateField>
+  
+     <asp:TemplateField HeaderText="Action">
+       <ItemTemplate>
+       <asp:LinkButton ID="btn_sleep" CssClass="btn btn-info btn-flat" Style="width: 100%;  border: 1px solid blue; border-radius: 3px;" Visible="true" runat="server" Text='<%# Bind("status") %>' ><i class="glyphicon glyphicon-pencil"></i><span style="font-weight:bold;color:black;"> Edit</span> </asp:LinkButton>
+       </ItemTemplate>
+       </asp:TemplateField>
+      </Columns>
+
+                </asp:GridView> 
+
+
+			</div><!-- /.col-->
+
+          </div>
+		</section><!-- /.row -->
+  <script>
+      $(function () {
+          $("#ContentPlaceHolder1_GridView1").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+              "sScrollY": "200",
+              "sScrollX": "10%",
+              "sScrollXInner": "100%",
+              "scrollCollapse": true,
+              "paging": true,
+              "bPaginate": true,
+              "bLengthChange": true,
+              "bFilter": true,
+              "bSort": true,
+              "bInfo": true,
+              "bAutoWidth": true
+          });
+      });
+    </script>

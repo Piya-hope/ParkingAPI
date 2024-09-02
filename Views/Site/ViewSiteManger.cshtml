@@ -1,0 +1,191 @@
+﻿@*@model ParkingSystem.Models.SiteModel*@
+@model IEnumerable<ParkingSystem.Models.SiteModel>
+@{
+    ViewBag.Title = "ViewSite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Session["UserName"] != null || Session["UserID"] != null || Session["Designation"] != null || Session["SiteID"] != null || Session["SiteName"] != null)
+{
+    <div class="content-wrapper">
+        <section class="content-header">
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+                <li><a href="#"><i class="active"></i>Site Management</a></li>
+                <li><a href="@Url.Action("ViewSiteManger", "Site")"><i class="active"></i>View Site</a></li>
+            </ol>
+        </section>
+        <br />
+        <!-- /.design work-->
+        @if (Session["Designation"].ToString() == "Manager")
+        {
+            <section class="content">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="row" style="padding: 8px 30px;">
+                            <span style="font-weight: bold; font-size: large;" class="text-success no-margin">Site Summary</span>
+                            <div class="col-lg-12 col-sm-12 col-md-12">
+
+                                <div class="col-lg-3 col-sm-3 col-md-3">
+                                    <div class="inner">
+                                        <h3 style="font-weight:normal">
+                                            @Html.Label((string)ViewBag.Total)
+                                        </h3>
+                                        <p style="color:blue">Total Site</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-md-3">
+                                    <div class="inner">
+                                        <h3>
+                                            @Html.Label((string)ViewBag.TotalActive)
+                                        </h3>
+                                        <p class="text-success no-margin">
+                                            Active Site
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-md-3">
+                                    <div class="inner">
+                                        <h3>
+                                            @Html.Label((string)ViewBag.TotalInActive)
+                                        </h3>
+                                        <p class="text-danger bold">InActive Site</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            @*//}*@
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">View All Site Details</h4>
+                    </div>
+                    <div class="box-body">
+                        <table id="tblSite" class="table table-bordered table-striped font-12" style="width:100%">
+                            <thead></thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Site_ID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Site_Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Site_Type)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SiteContactNumber)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Address)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                            </tr>
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.Status1 == true)
+                                {
+                                    <tr style="color:green;">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_ID)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_Type)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SiteContactNumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>                                        
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr style="color:red;">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_ID)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Site_Type)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SiteContactNumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </section>
+        }
+    </div>
+
+
+}
+@* table script *@
+<script>
+    $(function () {
+        $("#tblSite").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable({
+            "sScrollY": "250",
+            "sScrollX": "10%",
+            "sScrollXInner": "100%",
+            "scrollCollapse": true,
+            "paging": true,
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "scrollX": true,
+            "font-size": "12px",
+        });
+    });
+</script>
+
+
+
+
+<!-- /.row -->
